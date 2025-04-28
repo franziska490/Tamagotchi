@@ -20,10 +20,10 @@
 
 ### Backend (DBI)
 - **MariaDB** als Datenbank
-- **Mind. 3 Tabellen:**
-  - `Users` (ID,Name, Passwort)
-  - `Pets` (ID, Name, Hunger, Energie, Stimmung, UserID)
-  - `Actions` (ID, PetID, ActionType, Timestamp)
+                                                                                                      - **Mind. 3 Tabellen:**
+                                                                                                      - `Users` (ID,Name, Passwort)
+                                                                                                      - `Pets` (ID, Name, Hunger, Energie, Stimmung, UserID)
+                                                                                                      - `Actions` (ID, PetID, ActionType, Timestamp)
 - **REST API:** C# Backend, Übergabe der Daten im JSON-Format
 - **Swagger Dokumentation:** Dokumentation der REST-Schnittstellen
 - **Benutzerrollen:** "Admin" (kann alle Tiere bearbeiten) und "User" (nur eigenes Tier betreuen)
@@ -38,11 +38,11 @@
 - Mindestens 3 Fenster
 - Basisarchitektur mit Vererbung und Interfaces
 - Nutzung von GitHub
+- Auswahl verschiedener Tierarten bei Spielstart *
+- Mehrere Haustiere pro Benutzer *
+- Animierte Haustierbilder (z.B. beim Spielen bewegt sich das Bild) *
 
 ## Welche Features sind Erweiterungen (nice-to-have)?
-- Auswahl verschiedener Tierarten bei Spielstart
-- Mehrere Haustiere pro Benutzer
-- Animierte Haustierbilder (z.B. beim Spielen bewegt sich das Bild)
 - Hintergrundmusik oder Soundeffekte bei Aktionen
 - Cloud-Datenbank (z.B. Cloudflare) statt lokaler MariaDB
 
