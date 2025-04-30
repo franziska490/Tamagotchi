@@ -71,3 +71,22 @@
 5. **Abschluss:**
    - Erstellung von Präsentationsunterlagen
    - Hochladen von Dokumentation und Projekt auf GitHub
+
+
+___________________________________________________________________________________________________________________________________________________________
+## Beginn WPF 30.04.2025
+LoginWindow und Mainwindow - Franziska
+**Gemacht**
+Klick auf Login-Button ➔
+Wenn Benutzer = admin und Passwort = 1234 ➔ Wechsel ins Hauptfenster (MainWindow)
+Wenn falsch ➔ Fehlermeldung
+✅ Fenster "Login" soll sich öffnen
+✅ Eingabe Benutzername + Passwort möglich
+✅ Nach Login auf "admin/1234" öffnet sich das Hauptfenster
+Klick auf „Füttern“ ➔ Hunger-Leiste füllt sich
+Klick auf „Spielen“ ➔ Stimmung steigt
+Klick auf „Schlafen“ ➔ Energie steigt
+✅ MainWindow zeigt Bild, Buttons und Fortschrittsbalken
+✅ Aktionen verändern die Anzeige
+✅ StatusButton öffnet PetEditSelection
+
