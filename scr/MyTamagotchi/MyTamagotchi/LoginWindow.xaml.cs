@@ -23,5 +23,23 @@ namespace MyTamagotchi
         {
             InitializeComponent();
         }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            string username = UsernameTextBox.Text;
+            string password = PasswordBox.Password;
+
+            // Hier später richtige Logik einbauen (z.B. API Aufruf)
+            if (username == "admin" && password == "1234")
+            {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Falscher Benutzername oder Passwort!", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

@@ -20,5 +20,26 @@ namespace MyTamagotchi
         {
             InitializeComponent();
         }
+
+        private void FeedButton_Click(object sender, RoutedEventArgs e)
+        {
+            HungerBar.Value = Math.Min(HungerBar.Value + 10, 100);
+        }
+
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            MoodBar.Value = Math.Min(MoodBar.Value + 10, 100);
+        }
+
+        private void SleepButton_Click(object sender, RoutedEventArgs e)
+        {
+            EnergyBar.Value = Math.Min(EnergyBar.Value + 10, 100);
+        }
+
+        private void ShowStatusButton_Click(object sender, RoutedEventArgs e)
+        {
+            PetEditSelectionWindow statusWindow = new PetEditSelectionWindow();
+            statusWindow.Show();
+        }
     }
 }

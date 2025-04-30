@@ -8,5 +8,6 @@ namespace MyTamagotchi.Models
 {
     internal interface IFeedable
     {
+        void Feed();
     }
 }

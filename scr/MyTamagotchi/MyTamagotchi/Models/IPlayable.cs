@@ -8,5 +8,6 @@ namespace MyTamagotchi.Models
 {
     internal interface IPlayable
     {
+        void Play();
     }
 }
