@@ -1,6 +1,4 @@
-﻿
-using MyTamagotchi;
-using MyTamagotchi.Models;
+﻿using MyTamagotchi.Models;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Windows;

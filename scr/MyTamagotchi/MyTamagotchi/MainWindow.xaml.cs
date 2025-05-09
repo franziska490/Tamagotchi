@@ -13,7 +13,6 @@ using System.Windows.Threading;
 
 using System.Threading.Tasks;
 
-
 namespace MyTamagotchi
 {
     /// <summary>
