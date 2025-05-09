@@ -95,4 +95,12 @@ Pet.cs	Klasse für das Haustier (mit Hunger, Energie, Stimmung)
 User.cs	Klasse für Benutzer mit Rolle
 IFeedable.cs, IPlayable.cs, ISleepable.cs	Interfaces für Aktionen
 
-
+## -09.05
+Jedes Mal, wenn du eine Aktion im Spiel klickst ➔ wird ein Logeintrag geschrieben.
+Die Datei log.txt liegt direkt im Programmverzeichnis.
+Bereich    Status ✅
+3 Fenster (Login, Main, Status)    ✅
+Haustier-Modell OOP    ✅
+GUI Steuerung    ✅
+Lebenssimulation Timer (Bonus)    ✅
+Logging    ✅

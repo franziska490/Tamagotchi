@@ -72,8 +72,11 @@ namespace MyTamagotchi
 
         private void ShowStatusButton_Click(object sender, RoutedEventArgs e)
         {
-            PetEditSelectionWindow statusWindow = new PetEditSelectionWindow(myPet);
+            StatusWindow statusWindow = new StatusWindow(myPet);
             statusWindow.Show();
         }
     }
+
+
+
 }
