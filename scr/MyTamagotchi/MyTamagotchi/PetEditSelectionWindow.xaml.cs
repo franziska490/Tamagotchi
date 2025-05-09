@@ -34,8 +34,8 @@ namespace MyTamagotchi
             string petName = NameBox.Text.Trim();
 
             // Name darf nicht leer und nur Buchstaben sein
-            if (string.IsNullOrWhiteSpace(petName)!Regex.IsMatch(petName, @"^[a-zA-Z]+$"))
-        {
+            if (string.IsNullOrWhiteSpace(petName) || !Regex.IsMatch(petName, @"^[a-zA-Z]+$"))
+            {
                 MessageBox.Show("Nuhu thats not a Name!");
                 return;
             }
@@ -44,20 +44,20 @@ namespace MyTamagotchi
             Pet newPet = new Pet(petName);
 
             // Verfallraten prüfen
-            if (!int.TryParse(HungerRateBox.Text, out int hungerRate)  hungerRate < 1  hungerRate > 20)
-        {
+            if (!int.TryParse(HungerRateBox.Text, out int hungerRate) || hungerRate < 1 || hungerRate > 20)
+            {
                 MessageBox.Show("Number between 1-20");
                 return;
             }
 
-            if (!int.TryParse(EnergyRateBox.Text, out int energyRate)  energyRate < 1  energyRate > 20)
-        {
+            if (!int.TryParse(EnergyRateBox.Text, out int energyRate) || energyRate < 1 || energyRate > 20)
+            {
                 MessageBox.Show("Number between 1-20");
                 return;
             }
 
-            if (!int.TryParse(MoodRateBox.Text, out int moodRate)  moodRate < 1 || moodRate > 20)
-        {
+            if (!int.TryParse(MoodRateBox.Text, out int moodRate) || moodRate < 1 || moodRate > 20)
+            {
                 MessageBox.Show("Number between 1-20");
                 return;
             }

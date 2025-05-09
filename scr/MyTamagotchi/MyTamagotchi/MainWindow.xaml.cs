@@ -10,10 +10,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-// TASK THREADS
+
 using System.Threading.Tasks;
-using MyTamagotchi.Models;
-using MyTamagotchi;
+
 
 namespace MyTamagotchi
 {
@@ -61,7 +60,6 @@ namespace MyTamagotchi
         //        PetImage.Source = new BitmapImage(new Uri("/Assets/seal_happy.png", UriKind.Relative));
         //    }
         //    UpdateUI();
-        //
         //}
         private async Task LoadPet()
         {

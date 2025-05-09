@@ -9,7 +9,33 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\" />
+    <None Remove="5e7edc90-1dc1-43c1-b9b7-63a51f217cea.jpeg" />
+    <None Remove="Assets\fibsh.png" />
+    <None Remove="Assets\seal_dead.png" />
+    <None Remove="Assets\seal_error.png" />
+    <None Remove="Assets\seal_happy.png" />
+    <None Remove="Assets\seal_happy2.png" />
+    <None Remove="Assets\seal_hungry.png" />
+    <None Remove="Assets\seal_nom.png" />
+    <None Remove="Assets\seal_sad.png" />
+    <None Remove="Assets\seal_sleep.png" />
+    <None Remove="Assets\seal_sleepy.png" />
+    <None Remove="Assets\seal_wobble.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="5e7edc90-1dc1-43c1-b9b7-63a51f217cea.jpeg" />
+    <Resource Include="Assets\fibsh.png" />
+    <Resource Include="Assets\seal_dead.png" />
+    <Resource Include="Assets\seal_error.png" />
+    <Resource Include="Assets\seal_happy.png" />
+    <Resource Include="Assets\seal_happy2.png" />
+    <Resource Include="Assets\seal_hungry.png" />
+    <Resource Include="Assets\seal_nom.png" />
+    <Resource Include="Assets\seal_sad.png" />
+    <Resource Include="Assets\seal_sleep.png" />
+    <Resource Include="Assets\seal_sleepy.png" />
+    <Resource Include="Assets\seal_wobble.png" />
   </ItemGroup>
 
 </Project>
