@@ -68,7 +68,11 @@ namespace MyTamagotchi
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            LoginWindow newloginwindow = new LoginWindow();
+            newloginwindow.Show();
             this.Close();
+            
+            
         }
     }
 }

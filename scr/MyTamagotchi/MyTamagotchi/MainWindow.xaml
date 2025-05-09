@@ -11,7 +11,7 @@
         </Viewbox.OpacityMask>
         <Grid Width="400" Height="500" Margin="20">
             <Grid.Background>
-                <ImageBrush ImageSource="/5e7edc90-1dc1-43c1-b9b7-63a51f217cea.jpeg"/>
+                <ImageBrush ImageSource="/Ice_floating.png"/>
             </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
