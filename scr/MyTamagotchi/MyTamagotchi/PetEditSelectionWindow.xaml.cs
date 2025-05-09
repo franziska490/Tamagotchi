@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,25 +21,65 @@ namespace MyTamagotchi
     /// </summary>
     public partial class PetEditSelectionWindow : Window
     {
-        private Pet myPet;
+        private PetSelectionWindow parentWindow;
 
-        public PetEditSelectionWindow(Pet pet)
+        public PetEditSelectionWindow(PetSelectionWindow parent)
         {
             InitializeComponent();
-            myPet = pet;
-            UpdateStatus();
+            parentWindow = parent;
         }
 
-        private void UpdateStatus()
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            HungerStatusText.Text = $"Hunger: {myPet.Hunger}";
-            EnergyStatusText.Text = $"Energie: {myPet.Energy}";
-            MoodStatusText.Text = $"Stimmung: {myPet.Mood}";
+            string petName = NameBox.Text.Trim();
+
+            // Name darf nicht leer und nur Buchstaben sein
+            if (string.IsNullOrWhiteSpace(petName)!Regex.IsMatch(petName, @"^[a-zA-Z]+$"))
+        {
+                MessageBox.Show("Nuhu thats not a Name!");
+                return;
+            }
+
+            // Neues Pet erstellen
+            Pet newPet = new Pet(petName);
+
+            // Verfallraten prüfen
+            if (!int.TryParse(HungerRateBox.Text, out int hungerRate)  hungerRate < 1  hungerRate > 20)
+        {
+                MessageBox.Show("Number between 1-20");
+                return;
+            }
+
+            if (!int.TryParse(EnergyRateBox.Text, out int energyRate)  energyRate < 1  energyRate > 20)
+        {
+                MessageBox.Show("Number between 1-20");
+                return;
+            }
+
+            if (!int.TryParse(MoodRateBox.Text, out int moodRate)  moodRate < 1 || moodRate > 20)
+        {
+                MessageBox.Show("Number between 1-20");
+                return;
+            }
+
+            // Werte setzen
+            newPet.HungerDecreaseRate = hungerRate;
+            newPet.EnergyDecreaseRate = energyRate;
+            newPet.MoodDecreaseRate = moodRate;
+
+            // Pet dem Parent Window hinzufügen
+            parentWindow.AddPet(newPet);
+
+            // Log schreiben
+            Logger.Log($"New Pet: {newPet.Name})");
+
+            // Fenster schließen
+            this.Close();
         }
 
-        private void UpdateStatusButton_Click(object sender, RoutedEventArgs e)
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            UpdateStatus();
+            this.Close();
         }
     }
 }
