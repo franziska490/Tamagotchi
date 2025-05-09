@@ -90,3 +90,9 @@ Klick auf „Schlafen“ ➔ Energie steigt
 ✅ Aktionen verändern die Anzeige
 ✅ StatusButton öffnet PetEditSelection
 
+## -0.9.05
+Pet.cs	Klasse für das Haustier (mit Hunger, Energie, Stimmung)
+User.cs	Klasse für Benutzer mit Rolle
+IFeedable.cs, IPlayable.cs, ISleepable.cs	Interfaces für Aktionen
+
+

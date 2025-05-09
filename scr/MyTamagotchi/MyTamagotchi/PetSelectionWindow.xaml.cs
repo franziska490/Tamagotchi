@@ -17,11 +17,22 @@ namespace MyTamagotchi
     /// <summary>
     /// Interaktionslogik für PetSelectionWindow.xaml
     /// </summary>
-    public partial class PetSelectionWindow : Window
+    public partial class PetEditSelectionWindow : Window
     {
-        public PetSelectionWindow()
+        public PetEditSelectionWindow()
         {
             InitializeComponent();
+        }
+
+        private void UpdateStatusButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Holt Werte aus MainWindow
+            if (Application.Current.Windows[0] is MainWindow mainWindow)
+            {
+                HungerStatusText.Text = $"Hunger: {(int)mainWindow.HungerBar.Value}";
+                EnergyStatusText.Text = $"Energie: {(int)mainWindow.EnergyBar.Value}";
+                MoodStatusText.Text = $"Stimmung: {(int)mainWindow.MoodBar.Value}";
+            }
         }
     }
 }
