@@ -77,40 +77,18 @@ namespace MyTamagotchi
 
         private void UpdatePetImage()
         {
-            // Debug-Log (optional), um Werte zu prüfen
-            Console.WriteLine($"Hunger: {myPet.Hunger}, Energy: {myPet.Energy}, Mood: {myPet.Mood}");
-
-            if (myPet.Mood == 0 || myPet.Energy == 0 || myPet.Hunger == 0)
+            if (myPet is StarterPet starter)
             {
-                PetImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/seal_dead.png"));
-                lifeTimer.Stop();
-                return;
-            }
-            // PRIO 1: Hunger
-            if (myPet.Hunger < 50)
-            {
-                PetImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/seal_hungry.png"));
-                return;
-            }
+                starter.UpdateImage();
+                PetImage.Source = starter.PetImage;
 
-            // PRIO 2: Energie
-            if (myPet.Energy < 50)
-            {
-                PetImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/seal_sleepy.png"));
-                return;
+                if (starter.Mood == 0 || starter.Energy == 0 || starter.Hunger == 0)
+                {
+                    lifeTimer.Stop();
+                }
             }
-
-            // PRIO 3: Stimmung
-            if (myPet.Mood < 50)
-            {
-                PetImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/seal_sad.png"));
-                return;
-            }
-
-
-            // PRIO 4: alles gut
-            PetImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/seal_happy.png"));
         }
+
 
 
 
@@ -155,33 +133,48 @@ namespace MyTamagotchi
         private async void FeedButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Feed();
-            // LOGGING
             Logger.Log($"{myPet.Name} was feeded.");
-            PetImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/seal_nom.png"));
-            await Task.Delay(1500); // 1,5 Sekunden warten
+
+            if (myPet is StarterPet starter)
+            {
+                starter.SetActionImage("nom");
+                PetImage.Source = starter.PetImage;
+            }
+
+            await Task.Delay(1500);
             UpdateUI();
-            //UpdatePetImage();
         }
+
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Play();
-            // LOGGING
             Logger.Log($"{myPet.Name} had played.");
-            PetImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/seal_happy2.png"));
-            await Task.Delay(1500); // 1,5 Sekunden warten
+
+            if (myPet is StarterPet starter)
+            {
+                starter.SetActionImage("happy2");
+                PetImage.Source = starter.PetImage;
+            }
+
+            await Task.Delay(1500);
             UpdateUI();
-            //UpdatePetImage();
         }
+
         private async void SleepButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Sleep();
-            // LOGGING
             Logger.Log($"{myPet.Name} did sleep.");
-            PetImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/seal_sleep.png"));
-            await Task.Delay(1500); // 1,5 Sekunden warten
+
+            if (myPet is StarterPet starter)
+            {
+                starter.SetActionImage("sleep");
+                PetImage.Source = starter.PetImage;
+            }
+
+            await Task.Delay(1500);
             UpdateUI();
-            //UpdatePetImage();
         }
+
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {

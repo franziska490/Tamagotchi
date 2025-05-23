@@ -3,12 +3,18 @@
 
 namespace MyTamagotchi.Models
 {
-    public class Pet : IFeedable, IPlayable, ISleepable
+    public class Pet
     {
         public string Name { get; set; }
-        public int Hunger { get; set; }
-        public int Energy { get; set; }
-        public int Mood { get; set; }
+        public int Hunger { get; set; } = 100;
+        public int Mood { get; set; } = 100;
+        public int Energy { get; set; } = 100;
+        //public abstract string GetImagePath();
+
+
+    
+    
+       
 
         // NEU: Sinkraten der Werte
         public int HungerDecreaseRate { get; set; } = 2;
