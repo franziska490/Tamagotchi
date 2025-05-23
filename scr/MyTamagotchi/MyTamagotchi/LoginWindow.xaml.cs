@@ -43,7 +43,7 @@ namespace MyTamagotchi
 
             if (users.ContainsKey(username) && users[username] == password)
             {
-                MessageBox.Show("Login erfolgreich!", "Info");
+                // MessageBox.Show("Login erfolgreich!", "Info");
 
                 if (username == adminUsername)
                 {

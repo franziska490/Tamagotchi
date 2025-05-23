@@ -186,7 +186,7 @@ namespace MyTamagotchi
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             await PetApiService.SavePetAsync(myPet);
-            MessageBox.Show("Pet was saved!", "Info");
+            // MessageBox.Show("Pet was saved!", "Info");
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
