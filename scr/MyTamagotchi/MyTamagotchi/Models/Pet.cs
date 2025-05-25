@@ -1,19 +1,25 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 
 namespace MyTamagotchi.Models
 {
     public class Pet
     {
-        public string Name { get; set; }
-        public int Hunger { get; set; } = 100;
-        public int Mood { get; set; } = 100;
-        public int Energy { get; set; } = 100;
+        [JsonProperty("petid")]
+        public int Id { get; set; }
+        public int ownerid { get; set; }
+
+        [JsonProperty("name")]
+        public string  Name{ get; set; }
+        [JsonProperty("hunger")]
+        public int Hunger { get; set; } 
+        [JsonProperty("energy")]
+        public int Energy { get; set; }
+        [JsonProperty("mood")]
+        public int Mood { get; set; }
         //public abstract string GetImagePath();
 
-
-    
-    
        
 
         // NEU: Sinkraten der Werte

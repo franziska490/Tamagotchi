@@ -1,6 +1,7 @@
 Create database if not exists tamagotchidb;
 use tamagotchidb;
 
+-- Tabelle für Benutzer
 Create table users (
     userid int auto_increment primary key,
     username text not null,
@@ -8,6 +9,7 @@ Create table users (
     role enum('admin', 'user') not null 
 );
 
+-- Tabelle für Benutzer
 Create table pets(
     petid int auto_increment primary key,
     name text not null,
@@ -17,6 +19,7 @@ Create table pets(
     ownerid int, foreign Key(ownerid) references users(userid)
 );
 
+-- Tabelle für durchgeführte Aktionen
 Create table actions(
     actionid int auto_increment primary key,
     petid int,
@@ -27,3 +30,24 @@ Create table actions(
 
 -- not null: darf nicht leer sein, eingabe verpflichtend
 -- enum für rollenverteilung, aufzählungstypen für die verschiedenen werten
+
+-- Benutzer einfügen
+INSERT INTO users (username, password, role) VALUES 
+('laura', '1234', 'user'), -- Achtung: Passwort sollte gehasht sein
+('admin01', 'adminpw', 'admin');
+
+-- Haustiere einfügen (jeweils einem Benutzer zugeordnet)
+INSERT INTO pets (name, hunger, energy, mood, ownerid) VALUES 
+('Fluffy', 80, 90, 85, 1),  -- Haustier für laura
+('Spike', 60, 70, 75, 2);   -- Haustier für admin01
+
+-- Beispielaktionen für Fluffy (Pet von laura, petid = 1)
+INSERT INTO actions (petid, actiontype) VALUES 
+(1, 'hunger'),
+(1, 'energy'),
+(1, 'mood');
+
+-- Beispielaktionen für Spike (Pet von admin01, petid = 2)
+INSERT INTO actions (petid, actiontype) VALUES 
+(2, 'hunger'),
+(2, 'mood');

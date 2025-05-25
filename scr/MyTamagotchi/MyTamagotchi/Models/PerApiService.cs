@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MyTamagotchi.Models
 {
-    public static class PetApiService
+    public  class PetApiService
     {
         private static readonly HttpClient client = new HttpClient();
 
         // Basis-URL deiner API (später anpassen)
-        private static readonly string baseUrl = "https://example.com/api/pets"; // FAKE-URL
+        //private static readonly string baseUrl = "https://example.com/api/pets"; // FAKE-URL
 
         public static async Task<List<Pet>> GetPetsAsync()
         {
@@ -26,8 +27,8 @@ namespace MyTamagotchi.Models
             {
                 return new List<Pet>();
             }
+            
         }
-
         public static async Task SavePetAsync(Pet pet)
         {
             try
@@ -40,6 +41,13 @@ namespace MyTamagotchi.Models
             {
                 // Fehler ignorieren
             }
+        }
+        public async Task<List<Pet>> GetTestPets()
+        {
+            HttpResponseMessage response = await client.GetAsync("http://localhost:5000/pets");
+            string json = await response.Content.ReadAsStringAsync();
+            List<Pet> pets = JsonSerializer.Deserialize<List<Pet>>(json);
+            return pets;
         }
     }
 }

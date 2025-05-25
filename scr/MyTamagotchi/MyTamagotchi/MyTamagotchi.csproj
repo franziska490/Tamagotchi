@@ -24,6 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\fibsh.png" />
     <Resource Include="Assets\seal_dead.png" />
     <Resource Include="Assets\seal_error.png" />
