@@ -1,21 +1,23 @@
 ﻿using System;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+
 
 namespace MyTamagotchi.Models
 {
     public class Pet
     {
-        [JsonProperty("petid")]
+        [JsonPropertyName("petid")]
         public int Id { get; set; }
         public int ownerid { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("hunger")]
+        [JsonPropertyName("hunger")]
         public int Hunger { get; set; }
-        [JsonProperty("energy")]
+        [JsonPropertyName("energy")]
         public int Energy { get; set; }
-        [JsonProperty("mood")]
+        [JsonPropertyName("mood")]
         public int Mood { get; set; }
 
         public int HungerDecreaseRate { get; set; } = 2;

@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="LoginWindow.xaml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Assets\dead_seal.png" />
     <None Remove="Assets\fibsh.png" />
     <None Remove="Assets\seal_dead.png" />
@@ -26,18 +22,6 @@
     <None Remove="Assets\seal_sleepy.png" />
     <None Remove="Assets\seal_wobble.png" />
     <None Remove="Ice_floating.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="LoginWindow.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="LoginWindow.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="LoginWindow.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
