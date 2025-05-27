@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LoginWindow.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\dead_seal.png" />
     <None Remove="Assets\fibsh.png" />
     <None Remove="Assets\seal_dead.png" />
     <None Remove="Assets\seal_error.png" />
@@ -24,11 +29,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="LoginWindow.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="LoginWindow.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="LoginWindow.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\fibsh.png" />
+    <Resource Include="Assets\fibsh.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\seal_dead.png" />
     <Resource Include="Assets\seal_error.png" />
     <Resource Include="Assets\seal_happy.png" />
