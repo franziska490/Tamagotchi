@@ -63,5 +63,11 @@ namespace MyTamagotchi.Models
             }
         }
 
+        public override string ToString()
+        {
+            return $"{Name} Hunger: {Hunger}%, Energy: {Energy}%, Mood: {Mood}%";
+        }
+
+
     }
 }

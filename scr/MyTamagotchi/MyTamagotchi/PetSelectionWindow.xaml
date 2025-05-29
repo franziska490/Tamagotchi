@@ -29,8 +29,7 @@
                    HorizontalAlignment="Center" Margin="0,5" Grid.Row="0"/>
 
         <!-- List of Saved Pets -->
-        <ListBox Name="PetListBox" Grid.Row="1" Margin="0,0,0,20"
-                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <ListBox Name="PetListBox" Grid.Row="1" Margin="0,0,0,37" Grid.RowSpan="2"/>
 
         <!-- Header: Starter Pet -->
         <TextBlock Text="Starter Pet:" FontSize="24" FontWeight="Bold" 

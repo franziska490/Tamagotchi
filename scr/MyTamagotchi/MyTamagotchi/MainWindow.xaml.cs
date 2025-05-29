@@ -129,7 +129,8 @@ namespace MyTamagotchi
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            await PetApiService.SavePetAsync(myPet);
+            await PetApiService.UpdatePets(myPet);
+
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

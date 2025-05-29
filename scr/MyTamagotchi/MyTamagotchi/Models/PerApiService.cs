@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyTamagotchi.Models
 {
-    public  class PetApiService
+    public class PetApiService
     {
         private static readonly HttpClient client = new HttpClient();
 
@@ -41,13 +41,39 @@ namespace MyTamagotchi.Models
             {
                 // Fehler ignorieren
             }
-        }
-        public async Task<List<Pet>> GetTestPets()
+        //}
+        //public async Task<List<Pet>> GetTestPets()
+        //{
+        //    HttpResponseMessage response = await client.GetAsync("http://localhost:5000/pets");
+        //    string json = await response.Content.ReadAsStringAsync();
+        //    List<Pet> pets = JsonSerializer.Deserialize<List<Pet>>(json);
+        //    return pets;
+        //}
+
+        public static async Task<List<Pet>> GetOwnerPets(int ownerid)
         {
-            HttpResponseMessage response = await client.GetAsync("http://localhost:5000/pets");
+            HttpResponseMessage response = await client.GetAsync($"http://localhost:5000/pets?ownerid={ownerid}");
             string json = await response.Content.ReadAsStringAsync();
             List<Pet> pets = JsonSerializer.Deserialize<List<Pet>>(json);
-            return pets;
+            return pets;     
         }
+
+        public static async Task<bool> UpdatePets(Pet updatePet )
+        {
+            string updatedpets = JsonSerializer.Serialize(new
+            {
+                name = updatePet.Name,
+                hunger = updatePet.Hunger,
+                energy = updatePet.Energy,
+                mood = updatePet.Mood,
+            });
+            
+            StringContent content = new StringContent(updatedpets);
+            HttpResponseMessage response = await client.PutAsync($"http://localhost:5000/pets/{updatePet.Id}",content);
+            return response.IsSuccessStatusCode ;
+
+        }
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MyTamagotchi.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace MyTamagotchi
@@ -24,9 +25,11 @@ namespace MyTamagotchi
             LoadPets();
         }
 
-        private void LoadPets()
+        private async Task LoadPets()
         {
-            // zukünftige DB-Anbindung
+            int currentUserId = 1; //Ändern vom Login übernehmen
+            List<Pet> ownerPets = await PetApiService.GetOwnerPets(currentUserId);
+            PetListBox.ItemsSource = ownerPets;
         }
 
         private void SealButton_Click(object sender, RoutedEventArgs e)
