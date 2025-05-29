@@ -1,4 +1,5 @@
 ﻿using System;
+using MyTamagotchi;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

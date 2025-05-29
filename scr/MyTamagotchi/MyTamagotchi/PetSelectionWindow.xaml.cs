@@ -1,8 +1,6 @@
 ﻿using MyTamagotchi.Models;
 using System.Collections.Generic;
-using System.Runtime.ExceptionServices;
 using System.Windows;
-
 
 namespace MyTamagotchi
 {
@@ -14,10 +12,8 @@ namespace MyTamagotchi
         {
             InitializeComponent();
 
-            // Sichtbarkeit des "Eigenschaften ändern"-Buttons abhängig vom Admin-Status
             if (LoginWindow.IsAdmin)
             {
-
                 EditButton.Visibility = Visibility.Visible;
             }
             else
@@ -25,24 +21,29 @@ namespace MyTamagotchi
                 EditButton.Visibility = Visibility.Collapsed;
             }
 
-            LoadPets(); // (falls du LoadPets hast, einfach wie bisher)
+            LoadPets();
         }
-
 
         private void LoadPets()
         {
-            // Hier werden später echte Haustiere aus der DB geladen
-            // Im Moment fügen wir nichts hinzu
+            // zukünftige DB-Anbindung
         }
 
         private void SealButton_Click(object sender, RoutedEventArgs e)
         {
-            Pet defaultSeal = new Pet("Chubby Seal"); // Neues Standard-Pet erstellen
-            MainWindow mainWindow = new MainWindow(defaultSeal); // Pet übergeben
+            StarterPet defaultSeal = new StarterPet(StarterType.ChubbySeal);
+            MainWindow mainWindow = new MainWindow(defaultSeal);
             mainWindow.Show();
             this.Close();
         }
 
+        private void PenguinButton_Click(object sender, RoutedEventArgs e)
+        {
+            StarterPet penguin = new StarterPet(StarterType.Pinguin);
+            MainWindow mainWindow = new MainWindow(penguin);
+            mainWindow.Show();
+            this.Close();
+        }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
@@ -50,15 +51,12 @@ namespace MyTamagotchi
             editWindow.ShowDialog();
         }
 
-
-
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
             PetEditSelectionWindow editWindow = new PetEditSelectionWindow(this);
             editWindow.ShowDialog();
         }
 
-        // Hilfsmethode: neues Pet in Liste einfügen
         public void AddPet(Pet newPet)
         {
             pets.Add(newPet);
@@ -68,11 +66,9 @@ namespace MyTamagotchi
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow newloginwindow = new LoginWindow();
-            newloginwindow.Show();
+            LoginWindow login = new LoginWindow();
+            login.Show();
             this.Close();
-            
-            
         }
     }
 }

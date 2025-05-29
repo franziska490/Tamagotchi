@@ -1,4 +1,6 @@
 ﻿using MyTamagotchi.Models;
+using System;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -17,7 +19,6 @@ namespace MyTamagotchi
             InitializeComponent();
             myPet = selectedPet;
 
-            // Game Over überwachen
             myPet.OnGameOver += ShowGameOverScreen;
 
             StartLifeTimer();
@@ -31,7 +32,7 @@ namespace MyTamagotchi
             {
                 myPet = pets[0];
                 UpdatePetImage();
-                UpdateUI();
+                UpdateStatsUI();
             }
             else
             {
@@ -41,11 +42,22 @@ namespace MyTamagotchi
 
         private void UpdatePetImage()
         {
-            if (myPet is StarterPet starter)
+            if (myPet.Name.ToLower().Contains("pinguin"))
+            {
+                PetImage.Source = new BitmapImage(new Uri("/Assets/pinguin.png", UriKind.Relative));
+            }
+            else if (myPet is StarterPet starter)
             {
                 starter.UpdateImage();
                 PetImage.Source = starter.PetImage;
             }
+        }
+
+        private string GetMoodName(int mood)
+        {
+            if (mood > 66) return "happy";
+            if (mood > 33) return "neutral";
+            return "sad";
         }
 
         private void StartLifeTimer()
@@ -63,11 +75,10 @@ namespace MyTamagotchi
             myPet.Mood = Math.Max(myPet.Mood - 4, 0);
 
             UpdateUI();
-
-            myPet.CheckGameOver(); // sauberer direkter Aufruf
+            myPet.CheckGameOver();
         }
 
-        private void UpdateUI()
+        private void UpdateStatsUI()
         {
             HungerBar.Value = myPet.Hunger;
             EnergyBar.Value = myPet.Energy;
@@ -76,7 +87,11 @@ namespace MyTamagotchi
             HungerValue.Text = $"{myPet.Hunger}%";
             EnergyValue.Text = $"{myPet.Energy}%";
             MoodValue.Text = $"{myPet.Mood}%";
+        }
 
+        private void UpdateUI()
+        {
+            UpdateStatsUI();
             UpdatePetImage();
         }
 
@@ -85,7 +100,11 @@ namespace MyTamagotchi
             myPet.Feed();
             Logger.Log($"{myPet.Name} was feeded.");
 
-            if (myPet is StarterPet starter)
+            if (myPet.Name.ToLower().Contains("pinguin"))
+            {
+                PetImage.Source = new BitmapImage(new Uri("/Assets/pinguin.png", UriKind.Relative));
+            }
+            else if (myPet is StarterPet starter)
             {
                 starter.SetActionImage("nom");
                 PetImage.Source = starter.PetImage;
@@ -100,7 +119,11 @@ namespace MyTamagotchi
             myPet.Play();
             Logger.Log($"{myPet.Name} had played.");
 
-            if (myPet is StarterPet starter)
+            if (myPet.Name.ToLower().Contains("pinguin"))
+            {
+                PetImage.Source = new BitmapImage(new Uri("/Assets/pinguin.png", UriKind.Relative));
+            }
+            else if (myPet is StarterPet starter)
             {
                 starter.SetActionImage("happy2");
                 PetImage.Source = starter.PetImage;
@@ -115,7 +138,11 @@ namespace MyTamagotchi
             myPet.Sleep();
             Logger.Log($"{myPet.Name} did sleep.");
 
-            if (myPet is StarterPet starter)
+            if (myPet.Name.ToLower().Contains("pinguin"))
+            {
+                PetImage.Source = new BitmapImage(new Uri("/Assets/pinguin.png", UriKind.Relative));
+            }
+            else if (myPet is StarterPet starter)
             {
                 starter.SetActionImage("sleep");
                 PetImage.Source = starter.PetImage;
@@ -143,7 +170,7 @@ namespace MyTamagotchi
             {
                 var gameOverWindow = new GameOverWindow();
                 gameOverWindow.Show();
-                this.Close(); // wichtig: MainWindow wird korrekt geschlossen
+                this.Close();
             });
         }
     }

@@ -42,7 +42,7 @@
                     </TextBlock.Foreground>
                 </TextBlock>
 
-                <TextBlock Text="RIP des wars ne"
+                <TextBlock Text="You didn't seal the deal"
                            FontSize="48"
                            Foreground="White"
                            HorizontalAlignment="Center"
