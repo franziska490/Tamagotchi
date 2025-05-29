@@ -9,7 +9,7 @@ namespace MyTamagotchi.Models
         Pinguin
     }
 
-    public class  StarterPet : Pet
+    public class StarterPet : Pet
     {
         public StarterType Type { get; }
         public BitmapImage PetImage { get; private set; }
@@ -17,7 +17,7 @@ namespace MyTamagotchi.Models
         public StarterPet(StarterType type) : base(GetNameFromType(type))
         {
             Type = type;
-            UpdateImage(); // Initiales Bild
+            UpdateImage();
         }
 
         private string GetPrefix()

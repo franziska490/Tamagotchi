@@ -1,11 +1,9 @@
 ﻿using MyTamagotchi.Models;
 using System;
-using System.IO;
-using System.Text;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 
 namespace MyTamagotchi
 {
@@ -18,11 +16,10 @@ namespace MyTamagotchi
         {
             InitializeComponent();
             myPet = selectedPet;
-
-            myPet.OnGameOver += ShowGameOverScreen;
-
             StartLifeTimer();
             UpdateUI();
+
+            myPet.OnGameOver += ShowGameOverScreen;
         }
 
         private async Task LoadPet()
@@ -32,7 +29,7 @@ namespace MyTamagotchi
             {
                 myPet = pets[0];
                 UpdatePetImage();
-                UpdateStatsUI();
+                UpdateUI();
             }
             else
             {
@@ -42,22 +39,16 @@ namespace MyTamagotchi
 
         private void UpdatePetImage()
         {
-            if (myPet.Name.ToLower().Contains("pinguin"))
-            {
-                PetImage.Source = new BitmapImage(new Uri("/Assets/pinguin.png", UriKind.Relative));
-            }
-            else if (myPet is StarterPet starter)
+            if (myPet is StarterPet starter)
             {
                 starter.UpdateImage();
                 PetImage.Source = starter.PetImage;
-            }
-        }
 
-        private string GetMoodName(int mood)
-        {
-            if (mood > 66) return "happy";
-            if (mood > 33) return "neutral";
-            return "sad";
+                if (starter.Mood == 0 || starter.Energy == 0 || starter.Hunger == 0)
+                {
+                    lifeTimer.Stop();
+                }
+            }
         }
 
         private void StartLifeTimer()
@@ -78,7 +69,7 @@ namespace MyTamagotchi
             myPet.CheckGameOver();
         }
 
-        private void UpdateStatsUI()
+        private void UpdateUI()
         {
             HungerBar.Value = myPet.Hunger;
             EnergyBar.Value = myPet.Energy;
@@ -87,11 +78,7 @@ namespace MyTamagotchi
             HungerValue.Text = $"{myPet.Hunger}%";
             EnergyValue.Text = $"{myPet.Energy}%";
             MoodValue.Text = $"{myPet.Mood}%";
-        }
 
-        private void UpdateUI()
-        {
-            UpdateStatsUI();
             UpdatePetImage();
         }
 
@@ -100,11 +87,7 @@ namespace MyTamagotchi
             myPet.Feed();
             Logger.Log($"{myPet.Name} was feeded.");
 
-            if (myPet.Name.ToLower().Contains("pinguin"))
-            {
-                PetImage.Source = new BitmapImage(new Uri("/Assets/pinguin.png", UriKind.Relative));
-            }
-            else if (myPet is StarterPet starter)
+            if (myPet is StarterPet starter)
             {
                 starter.SetActionImage("nom");
                 PetImage.Source = starter.PetImage;
@@ -119,11 +102,7 @@ namespace MyTamagotchi
             myPet.Play();
             Logger.Log($"{myPet.Name} had played.");
 
-            if (myPet.Name.ToLower().Contains("pinguin"))
-            {
-                PetImage.Source = new BitmapImage(new Uri("/Assets/pinguin.png", UriKind.Relative));
-            }
-            else if (myPet is StarterPet starter)
+            if (myPet is StarterPet starter)
             {
                 starter.SetActionImage("happy2");
                 PetImage.Source = starter.PetImage;
@@ -138,11 +117,7 @@ namespace MyTamagotchi
             myPet.Sleep();
             Logger.Log($"{myPet.Name} did sleep.");
 
-            if (myPet.Name.ToLower().Contains("pinguin"))
-            {
-                PetImage.Source = new BitmapImage(new Uri("/Assets/pinguin.png", UriKind.Relative));
-            }
-            else if (myPet is StarterPet starter)
+            if (myPet is StarterPet starter)
             {
                 starter.SetActionImage("sleep");
                 PetImage.Source = starter.PetImage;
