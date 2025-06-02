@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import mysql.connector 
+import bcrypt
 
 app = Flask(__name__)
 
@@ -90,27 +91,33 @@ def sleep_pet(id):
 def register():
     try:
         data = request.json
+        hashed_pw = bcrypt.hashpw(data["password"].encode("utf-8"), bcrypt.gensalt())
         cursor = db.cursor()
         cursor.execute("INSERT INTO users (username, password, role) VALUES (%s, %s, 'user')",
-                       (data["username"], data["password"]))
+                       (data["username"], hashed_pw))
         db.commit()
         return jsonify("User registered"), 201
-    except Exception:
+    except Exception as e:
+        print(e)
         return jsonify("Error"), 500
-
 
 @app.route("/auth/login", methods=["POST"])
 def login():
     try:
         data = request.json
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s",
-                       (data["username"], data["password"]))
+        cursor.execute("SELECT password FROM users WHERE username = %s", (data["username"],))
         result = cursor.fetchone()
         if not result:
             return jsonify("Login failed"), 401
-        return jsonify("Login successful"), 200
-    except Exception:
+
+        stored_hash = result[0].encode("utf-8")
+        if bcrypt.checkpw(data["password"].encode("utf-8"), stored_hash):
+            return jsonify("Login successful"), 200
+        else:
+            return jsonify("Login failed"), 401
+    except Exception as e:
+        print(e)
         return jsonify("Error"), 500
 
 
