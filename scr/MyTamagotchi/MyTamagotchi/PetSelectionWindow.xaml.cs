@@ -14,27 +14,46 @@ namespace MyTamagotchi
         public PetSelectionWindow()
         {
             InitializeComponent();
+            Loaded += PetSelectionWindow_Loaded; // ← NEU: Ladeevent
+        }
 
+        private async void PetSelectionWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Admin sichtbar machen
             if (LoginWindow.IsAdmin)
                 EditButton.Visibility = Visibility.Visible;
             else
                 EditButton.Visibility = Visibility.Collapsed;
 
-            _ = LoadPets(); // WICHTIG
+            await LoadPets(); // ← Jetzt korrekt asynchron geladen
         }
 
         private async Task LoadPets()
         {
-            int currentUserId = 1; // TODO: Vom Login übernehmen
-            pets = await PetApiService.GetOwnerPets(currentUserId);
+            int currentUserId = 1; // TODO: Vom LoginWindow übernehmen
 
-            if (pets == null || pets.Count == 0)
+            try
             {
-                MessageBox.Show("Keine Haustiere gefunden.");
-                return;
-            }
+                pets = await PetApiService.GetOwnerPets(currentUserId);
 
-            PetListBox.ItemsSource = pets;
+                if (pets == null)
+                {
+                    MessageBox.Show("Fehler beim Abrufen der Haustiere.");
+                    return;
+                }
+
+                if (pets.Count == 0)
+                {
+                    MessageBox.Show("Keine Haustiere gefunden.");
+                    return;
+                }
+
+                PetListBox.ItemsSource = pets;
+            }
+            catch
+            {
+                MessageBox.Show("Fehler beim Laden der Haustiere.");
+            }
         }
 
         private void SealButton_Click(object sender, RoutedEventArgs e)

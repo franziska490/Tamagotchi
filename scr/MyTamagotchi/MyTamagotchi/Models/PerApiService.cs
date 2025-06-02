@@ -36,9 +36,17 @@ namespace MyTamagotchi.Models
         // Holt NUR die Haustiere eines bestimmten Users
         public static async Task<List<Pet>> GetOwnerPets(int ownerid)
         {
-            List<Pet> allPets = await GetPetsAsync();
-            return allPets.Where(p => p.OwnerId == ownerid).ToList();
+            HttpResponseMessage response = await client.GetAsync($"http://localhost:5000/pets?ownerid={ownerid}");
+            string json = await response.Content.ReadAsStringAsync();
+
+            List<Pet> pets = JsonSerializer.Deserialize<List<Pet>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return pets ?? new List<Pet>();
         }
+
 
         // Speichert geändertes Tier in der Datenbank
         public static async Task<bool> UpdatePets(Pet updatePet)
