@@ -1,53 +1,53 @@
-Create database if not exists tamagotchidb;
-use tamagotchidb;
+-- Datenbank erstellen und verwenden
+CREATE DATABASE IF NOT EXISTS tamagotchidb;
+USE tamagotchidb;
 
 -- Tabelle für Benutzer
-Create table users (
-    userid int auto_increment primary key,
-    username text not null,
-    password text not null, -- Todo: password hash
-    role enum('admin', 'user') not null 
+CREATE TABLE users (
+    userid INT AUTO_INCREMENT PRIMARY KEY,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL, -- TODO: Passwort Hash
+    role ENUM('admin', 'user') NOT NULL 
 );
 
--- Tabelle für Benutzer
-Create table pets(
-    petid int auto_increment primary key,
-    name text not null,
-    hunger int not null,
-    energy int not null,
-    mood int not null,
-    ownerid int, foreign Key(ownerid) references users(userid)
+-- Tabelle für Haustiere (neu mit imagepath)
+CREATE TABLE pets (
+    petid INT AUTO_INCREMENT PRIMARY KEY,
+    name TEXT NOT NULL,
+    hunger INT NOT NULL,
+    energy INT NOT NULL,
+    mood INT NOT NULL,
+    ownerid INT,
+    imagepath TEXT,
+    FOREIGN KEY(ownerid) REFERENCES users(userid)
 );
 
--- Tabelle für durchgeführte Aktionen
-Create table actions(
-    actionid int auto_increment primary key,
-    petid int,
-    actiontype enum('hunger','energy','mood') not null,
-    lastperform timestamp default CURRENT_TIMESTAMP,
-    foreign key (petid) references pets(petid)
+-- Tabelle für Aktionen
+CREATE TABLE actions (
+    actionid INT AUTO_INCREMENT PRIMARY KEY,
+    petid INT,
+    actiontype ENUM('hunger', 'energy', 'mood') NOT NULL,
+    lastperform TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (petid) REFERENCES pets(petid)
 );
-
--- not null: darf nicht leer sein, eingabe verpflichtend
--- enum für rollenverteilung, aufzählungstypen für die verschiedenen werten
 
 -- Benutzer einfügen
 INSERT INTO users (username, password, role) VALUES 
-('laura', '1234', 'user'), -- Achtung: Passwort sollte gehasht sein
+('laura', '1234', 'user'),       -- Achtung: Passwort sollte gehasht werden!
 ('admin01', 'adminpw', 'admin');
 
--- Haustiere einfügen (jeweils einem Benutzer zugeordnet)
-INSERT INTO pets (name, hunger, energy, mood, ownerid) VALUES 
-('Fluffy', 80, 90, 85, 1),  -- Haustier für laura
-('Spike', 60, 70, 75, 2);   -- Haustier für admin01
+-- Haustiere einfügen (mit Bildpfad)
+INSERT INTO pets (name, hunger, energy, mood, ownerid, imagepath) VALUES 
+('Fluffy', 80, 90, 85, 1, '/Assets/seal_happy.png'),     
+('Spike', 60, 70, 75, 2, '/Assets/penguin_happy.png'),   
 
--- Beispielaktionen für Fluffy (Pet von laura, petid = 1)
+-- Beispielaktionen für Fluffy (petid = 1)
 INSERT INTO actions (petid, actiontype) VALUES 
 (1, 'hunger'),
 (1, 'energy'),
 (1, 'mood');
 
--- Beispielaktionen für Spike (Pet von admin01, petid = 2)
+-- Beispielaktionen für Spike (petid = 2)
 INSERT INTO actions (petid, actiontype) VALUES 
 (2, 'hunger'),
 (2, 'mood');
