@@ -44,12 +44,9 @@ def update_pet(id):
         cursor = db.cursor()
         cursor.execute("UPDATE pets SET name=%s,hunger=%s,energy=%s,mood=%s WHERE petid=%s", (newitem["name"],newitem["hunger"],newitem["energy"],newitem["mood"],id,))
         db.commit()
-
-       
         return jsonify("Pet updated"), 200
 
 
-# Haustier füttern
 @app.route("/pets/<id>/feed", methods=["POST"])
 def feed_pet(id):
     try:
@@ -57,12 +54,12 @@ def feed_pet(id):
         cursor.execute("UPDATE pets SET hunger = LEAST(hunger + 40, 100) WHERE petid = %s", (id,))
         db.commit()
         if cursor.rowcount == 0:
-            return jsonify("Feed failed – no pet with this ID"), 404
+            return jsonify("Feed failed no pet with this ID"), 404
         return jsonify("Pet fed"), 200
     except Exception:
         return jsonify("Error"), 500
 
-# Haustier spielen lassen
+
 @app.route("/pets/<id>/play", methods=["POST"])
 def play_pet(id):
     try:
@@ -70,12 +67,12 @@ def play_pet(id):
         cursor.execute("UPDATE pets SET mood = LEAST(mood + 20, 100) WHERE petid = %s", (id,))
         db.commit()
         if cursor.rowcount == 0:
-            return jsonify("Play failed – no pet with this ID"), 404
+            return jsonify("Play failed no pet with this ID"), 404
         return jsonify("Pet played with"), 200
     except Exception:
         return jsonify("Error"), 500
 
-# Haustier schlafen lassen
+
 @app.route("/pets/<id>/sleep", methods=["POST"])
 def sleep_pet(id):
     try:
@@ -83,12 +80,12 @@ def sleep_pet(id):
         cursor.execute("UPDATE pets SET energy = LEAST(energy + 30, 100) WHERE petid = %s", (id,))
         db.commit()
         if cursor.rowcount == 0:
-            return jsonify("Sleep failed – no pet with this ID"), 404
+            return jsonify("Sleep failed no pet with this ID"), 404
         return jsonify("Pet slept"), 200
     except Exception:
         return jsonify("Error"), 500
 
-# Registrierung
+
 @app.route("/auth/register", methods=["POST"])
 def register():
     try:
@@ -101,7 +98,7 @@ def register():
     except Exception:
         return jsonify("Error"), 500
 
-# Login
+
 @app.route("/auth/login", methods=["POST"])
 def login():
     try:
@@ -115,13 +112,6 @@ def login():
         return jsonify("Login successful"), 200
     except Exception:
         return jsonify("Error"), 500
-
-
-
-
-
-
-
 
 
 if __name__=='__main__':
