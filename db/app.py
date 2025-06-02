@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 import mysql.connector
+import bcrypt
+
 
 app = Flask(__name__)
 
@@ -11,13 +13,17 @@ db = mysql.connector.connect(
     database="tamagotchidb"
 )
 
-# Alle Haustiere abrufen
 @app.route("/pets", methods=["GET"])
 def get_pets():
+    ownerid = request.args.get("ownerid")
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM pets")
-    rows = cursor.fetchall()
 
+    if ownerid:
+        cursor.execute("SELECT * FROM pets WHERE ownerid = %s", (ownerid,))
+    else:
+        cursor.execute("SELECT * FROM pets")
+
+    rows = cursor.fetchall()
     pets = []
     for row in rows:
         pets.append({
@@ -27,7 +33,7 @@ def get_pets():
             "energy": row[3],
             "mood": row[4],
             "ownerid": row[5],
-            "imagepath": row[6]  # Bildpfad mitliefern
+            "imagepath": row[6]
         })
 
     return jsonify(pets), 200
@@ -112,9 +118,10 @@ def sleep_pet(id):
 def register():
     try:
         data = request.json
+        hashed_pw = bcrypt.hashpw(data["password"].encode("utf-8"), bcrypt.gensalt())
         cursor = db.cursor()
         cursor.execute("INSERT INTO users (username, password, role) VALUES (%s, %s, 'user')",
-                       (data["username"], data["password"]))
+                       (data["username"], hashed_pw))
         db.commit()
         return jsonify("User registered"), 201
     except Exception:
@@ -126,14 +133,19 @@ def login():
     try:
         data = request.json
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s",
-                       (data["username"], data["password"]))
+        cursor.execute("SELECT password FROM users WHERE username = %s", (data["username"],))
         result = cursor.fetchone()
         if not result:
             return jsonify("Login failed"), 401
-        return jsonify("Login successful"), 200
+
+        stored_hash = result[0].encode("utf-8")
+        if bcrypt.checkpw(data["password"].encode("utf-8"), stored_hash):
+            return jsonify("Login successful"), 200
+        else:
+            return jsonify("Login failed"), 401
     except Exception:
         return jsonify("Error"), 500
+
 
 
 if __name__ == '__main__':
