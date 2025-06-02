@@ -1,7 +1,5 @@
 ﻿using System;
-using Newtonsoft.Json;
 using System.Text.Json.Serialization;
-
 
 namespace MyTamagotchi.Models
 {
@@ -9,16 +7,36 @@ namespace MyTamagotchi.Models
     {
         [JsonPropertyName("petid")]
         public int Id { get; set; }
-        public int ownerid { get; set; }
+
+        [JsonPropertyName("ownerid")]
+        public int OwnerId { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
+
         [JsonPropertyName("hunger")]
         public int Hunger { get; set; }
+
         [JsonPropertyName("energy")]
         public int Energy { get; set; }
+
         [JsonPropertyName("mood")]
         public int Mood { get; set; }
+
+        [JsonPropertyName("imagepath")]
+        public string ImagePath { get; set; } = "/Assets/default_happy.png";
+
+        // Bildpfad für WPF-Ressourcensystem (pack://...)
+        public string ImageSourcePath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ImagePath))
+                    return "pack://application:,,,/Assets/default_happy.png";
+
+                return $"pack://application:,,,{ImagePath}";
+            }
+        }
 
         public int HungerDecreaseRate { get; set; } = 2;
         public int EnergyDecreaseRate { get; set; } = 2;
@@ -31,6 +49,8 @@ namespace MyTamagotchi.Models
             Energy = 100;
             Mood = 100;
         }
+
+        public Pet() { } // WICHTIG für JSON-Deserialisierung!
 
         public void Feed()
         {
@@ -67,7 +87,5 @@ namespace MyTamagotchi.Models
         {
             return $"{Name} Hunger: {Hunger}%, Energy: {Energy}%, Mood: {Mood}%";
         }
-
-
     }
 }
