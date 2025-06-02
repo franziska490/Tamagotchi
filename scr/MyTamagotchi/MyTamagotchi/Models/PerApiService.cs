@@ -69,5 +69,35 @@ namespace MyTamagotchi.Models
 
             return response.IsSuccessStatusCode;
         }
+
+        public static async Task<bool> SavePetAsync(Pet pet)
+        {
+            string petJson = JsonSerializer.Serialize(new
+            {
+                name = pet.Name,
+                hunger = pet.Hunger,
+                energy = pet.Energy,
+                mood = pet.Mood,
+                ownerid = pet.OwnerId,
+                imagepath = pet.ImagePath
+            });
+
+            StringContent content = new StringContent(petJson, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response;
+            if (pet.Id == 0)
+            {
+                // neues Tier anlegen
+                response = await client.PostAsync("http://localhost:5000/pets", content);
+            }
+            else
+            {
+                // bestehendes Tier updaten
+                response = await client.PutAsync($"http://localhost:5000/pets/{pet.Id}", content);
+            }
+
+            return response.IsSuccessStatusCode;
+        }
+
     }
 }

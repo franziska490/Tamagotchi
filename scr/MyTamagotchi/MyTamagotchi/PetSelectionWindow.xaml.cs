@@ -58,15 +58,23 @@ namespace MyTamagotchi
 
         private void SealButton_Click(object sender, RoutedEventArgs e)
         {
-            StarterPet defaultSeal = new StarterPet(StarterType.ChubbySeal);
+            StarterPet defaultSeal = new StarterPet(StarterType.ChubbySeal)
+            {
+                OwnerId = 1 // ← WICHTIG: muss ein existierender User in der Datenbank sein
+            };
+
             MainWindow mainWindow = new MainWindow(defaultSeal);
             mainWindow.Show();
             this.Close();
         }
 
+
         private void PenguinButton_Click(object sender, RoutedEventArgs e)
         {
-            StarterPet penguin = new StarterPet(StarterType.Pinguin);
+            StarterPet penguin = new StarterPet(StarterType.Pinguin)
+            {
+                OwnerId = 1
+            };
             MainWindow mainWindow = new MainWindow(penguin);
             mainWindow.Show();
             this.Close();

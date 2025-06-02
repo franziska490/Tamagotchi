@@ -112,6 +112,26 @@ def sleep_pet(id):
         return jsonify("Pet slept"), 200
     except Exception:
         return jsonify("Error"), 500
+    
+@app.route("/pets", methods=["POST"])
+def create_pet():
+    try:
+        data = request.json
+        cursor = db.cursor()
+        cursor.execute("""
+            INSERT INTO pets (name, hunger, energy, mood, ownerid, imagepath)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (
+            data["name"], data["hunger"], data["energy"], data["mood"],
+            data["ownerid"], data["imagepath"]
+        ))
+        db.commit()
+        return jsonify("Pet created"), 201
+    except Exception as e:
+        print("Fehler beim Speichern:", e)
+        return jsonify("Error creating pet"), 500
+
+
 
 # Registrierung
 @app.route("/auth/register", methods=["POST"])
