@@ -32,9 +32,10 @@ CREATE TABLE actions (
 );
 
 -- Benutzer einfügen
-INSERT INTO users (username, password, role) VALUES 
-('laura', '1234', 'user'),       -- Achtung: Passwort sollte gehasht werden!
-('admin01', 'adminpw', 'admin');
+INSERT INTO users (username, password, role) VALUES
+('laura', '$2b$12$RhW49UHBQdHALShQnMFfME0nIbiS2MLkLSISQE3ajLMhHyzGqQC0Ya', 'user'),
+('admin01', '$2b$12$1.TW4oZQxTDjGsIWh16y0ET0Yh1BQ4zMBo4qeCceNVecYnVrAyG', 'admin');
+
 
 -- Haustiere einfügen (mit Bildpfad)
 INSERT INTO pets (name, hunger, energy, mood, ownerid, imagepath) VALUES 
