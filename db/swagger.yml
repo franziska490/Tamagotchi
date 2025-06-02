@@ -1,0 +1,341 @@
+openapi: '3.0.3'
+info:
+  title: Tamagotchi
+  description: Rest API für virtuelle Tamagotchi Tiere
+  version: '1.0'
+
+paths:
+  /pets:
+    get:
+      tags:
+        - Abrufen
+      summary: Alle Haustiere abrufen
+      responses:
+        '200':
+          description: Tiere erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pet"
+                
+        '404':
+          description: Keine Tiere gefunden
+          content:
+            application/json:
+              schema:
+                type: string
+                example: No Pet was found
+    
+  /pets/{id}:
+    get:
+      tags:
+        - Abrufen
+      summary: Ein Tier abrufen über PetID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID des Tiers
+      responses:
+        '200':
+          description: Tier gefunden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Pet"
+        '404':
+            description: Tier nicht gefunden
+            content:
+              application/json:
+                schema:
+                  type: string
+                  example: No Pet was found
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Error
+        
+    put:
+      tags:
+        - Update
+      summary: Haustier aktualisieren
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID des Tiers
+      requestBody:
+        required: true
+        description: Aktualisierte Werte
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: seali
+                hunger:
+                  type: integer
+                  example: 80                    
+                energy:
+                  type: integer
+                  example: 60
+                mood:
+                  type: integer
+                  example: 30
+      responses:
+        '200':
+          description: Haustier erfolgreich aktualisiert
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Pet updated
+      
+        '404':
+          description: Haustier wurde nicht aktualisiert
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Update failed
+                           
+  /pets/{id}/feed:
+    post:
+      tags:
+      - Aktionen
+      summary: Haustier wird gefüttert ... Hunger verringert sich um...
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Gefüttert
+          content:
+            application/json:
+              schema:
+                type: string
+                example: fed
+        '404':
+            description: Tier nicht gefunden
+            content:
+              application/json:
+                schema:
+                  type: string
+                  example: No Pet was found
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Error
+
+  /pets/{id}/play:
+    post:
+      tags:
+      - Aktionen
+      summary: Mit Haustier spielen .. Mood verringert sich um...
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: erfolgreich gespielt
+          content:
+            application/json:
+              schema:
+                type: string
+                example: fed
+        '404':
+            description: Tier nicht gefunden
+            content:
+              application/json:
+                schema:
+                  type: string
+                  example: No Pet was found
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Error
+        
+  /pets/{id}/sleep:
+    post:
+      tags:
+      - Aktionen
+      summary: Haustier schläft .. Sleep verringert sich um...
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Geschlafen
+          content:
+            application/json:
+              schema:
+                type: string
+                example: fed
+        '404':
+            description: Tier nicht gefunden
+            content:
+              application/json:
+                schema:
+                  type: string
+                  example: No Pet was found
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Error
+
+  /auth/register:
+    post:
+      tags:
+      - Anmeldung
+      summary: Benutzer registrieren
+      requestBody:
+        required: true
+        description: Aktualisierte Werte
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Registrierung erfolgreich
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Register succed
+        '404':
+            description: Registrierung fehlgeschlagen
+            content:
+              application/json:
+                schema:
+                  type: string
+                  example: Register failed
+        '401':
+          description: Falsche Zugangsdaten
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Error
+
+  /auth/login:
+    post:
+      tags:
+      - Anmeldung
+      summary: Benutzer einloggen
+      requestBody:
+        required: true
+        description: Aktualisierte Werte
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login erfolgreich
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Login succed
+        '404':
+            description: Login fehlgeschlagen
+            content:
+              application/json:
+                schema:
+                  type: string
+                  example: Login failed
+        '401':
+          description: Falsche Zugangsdaten
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Error
+
+  
+
+          
+
+
+
+
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        petid:
+          type: integer
+          example: 1
+        ownerid:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: seali
+        hunger:
+          type: integer
+          example: 80
+          #minimum: 0
+          #maximum: 100
+        energy:
+          type: integer
+          example: 60
+        mood:
+          type: integer
+          example: 30
+      required:
+        - petid
+        - ownerid
+        - name
+        - hunger
+        - energy
+        - mood
+
+  securitySchemes:
+    basicAuth: 
+      type: http
+      scheme: basic
+security:
+  - basicAuth: []
