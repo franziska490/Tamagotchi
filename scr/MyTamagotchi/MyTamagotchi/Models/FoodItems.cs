@@ -20,7 +20,7 @@ namespace MyTamagotchi.Models
 
         public BitmapImage LoadImage()
         {
-            return new BitmapImage(new Uri($"pack://application:,,,/Assets/{ImagePath}", UriKind.Absolute));
+            return new BitmapImage(new Uri($"pack://application:,,,/Assets/Nom/{ImagePath}", UriKind.Absolute));
         }
 
 

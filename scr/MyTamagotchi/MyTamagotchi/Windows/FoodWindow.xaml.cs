@@ -20,8 +20,8 @@ namespace MyTamagotchi
         {
             var foodList = new List<FoodItem>
             {
-                new FoodItem("Fisch", 30, 10, "fibsh.png")
-                //new FoodItem("Melone", 15, 20, "Assets/watermelon.png"),
+                new FoodItem("Fisch", 30, 10, "fibsh.png"),
+                new FoodItem("Melone", 15, 20, "fibsh2.png"),
                 //new FoodItem("Eis", 10, 30, "Assets/icecream.png"),
             };
 
@@ -29,7 +29,7 @@ namespace MyTamagotchi
             {
                 var img = new Image
                 {
-                    Source = food.LoadImage(),  // <-- Bild korrekt laden
+                    Source = food.LoadImage(),
                     Width = 100,
                     Height = 100,
                     Margin = new Thickness(5),
