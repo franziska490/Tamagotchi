@@ -22,20 +22,20 @@ namespace MyTamagotchi
             myPet.OnGameOver += ShowGameOverScreen;
         }
 
-        private async Task LoadPet()
-        {
-            var pets = await PetApiService.GetPetsAsync();
-            if (pets.Count > 0)
-            {
-                myPet = pets[0];
-                UpdatePetImage();
-                UpdateUI();
-            }
-            else
-            {
-                MessageBox.Show("Wompi, no saved pet!");
-            }
-        }
+        //private async Task LoadPet()
+        //{
+        //    var pets = await PetApiService.GetPetsAsync();
+        //    if (pets.Count > 0)
+        //    {
+        //        myPet = pets[0];
+        //        UpdatePetImage();
+        //        UpdateUI();
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Wompi, no saved pet!");
+        //    }
+        //}
 
         private void UpdatePetImage()
         {
@@ -84,17 +84,23 @@ namespace MyTamagotchi
 
         private async void FeedButton_Click(object sender, RoutedEventArgs e)
         {
-            myPet.Feed();
-            Logger.Log($"{myPet.Name} was feeded.");
+            FoodWindow foodWindow = new FoodWindow();
+            bool? result = foodWindow.ShowDialog();
 
-            if (myPet is StarterPet starter)
+            if (result == true && foodWindow.SelectedItem != null)
             {
-                starter.SetActionImage("nom");
-                PetImage.Source = starter.PetImage;
-            }
+                foodWindow.SelectedItem.ApplyTo(myPet);
+                Logger.Log($"{myPet.Name} hat {foodWindow.SelectedItem.Name} gegessen.");
 
-            await Task.Delay(1500);
-            UpdateUI();
+                if (myPet is StarterPet starter)
+                {
+                    starter.SetActionImage("nom");
+                    PetImage.Source = starter.PetImage;
+                }
+
+                await Task.Delay(1500);
+                UpdateUI();
+            }
         }
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -146,12 +152,7 @@ namespace MyTamagotchi
                 MessageBox.Show("Fehler beim Speichern.");
             }
         }
-
-
-
-
-
-
+    
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             PetSelectionWindow petSelectionWindow = new PetSelectionWindow();
@@ -168,5 +169,8 @@ namespace MyTamagotchi
                 this.Close();
             });
         }
+
+        
+        
     }
 }

@@ -1,7 +1,10 @@
 ﻿<Window x:Class="MyTamagotchi.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="My Tamagotchi" Height="500" Width="400">
+        Title="My Tamagotchi"
+        WindowState="Maximized"
+        ResizeMode="CanResize">
+
     <Viewbox Stretch="Uniform">
         <Viewbox.OpacityMask>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -9,10 +12,12 @@
                 <GradientStop Color="#FF773D3D" Offset="1"/>
             </LinearGradientBrush>
         </Viewbox.OpacityMask>
+
         <Grid Width="400" Height="500" Margin="20">
             <Grid.Background>
                 <ImageBrush ImageSource="/Ice_floating.png"/>
             </Grid.Background>
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -43,7 +48,6 @@
                 </Button>
                 <Button Content="Sleep" Width="80" Margin="5" Click="SleepButton_Click"/>
                 <Button Content="Play" Width="80" Margin="5" Click="PlayButton_Click"/>
-
             </StackPanel>
 
             <StackPanel Grid.Row="2" Margin="0,20,0,0">
@@ -69,15 +73,11 @@
                 </StackPanel>
             </StackPanel>
 
-
+            <!-- Name-->
             <Button Content="Save" Grid.Row="4" Height="30" Margin="0,-20,210,0" Click="SaveButton_Click"/>
             <Button Content="Back" Grid.Row="4" Height="30"  Margin="210,-20,0,0" Click="BackButton_Click"/>
-            
-
             <TextBox Name="PetNameBox" Text="{Binding Name}" Margin="46,9,275,139" RenderTransformOrigin="0.241,0.54" />
             <Label x:Name="___Name_" Content="Name:" Margin="0,8,354,138" FontWeight="Bold"/>
-
-
         </Grid>
     </Viewbox>
 </Window>

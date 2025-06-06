@@ -22,7 +22,6 @@
     <None Remove="Assets\seal_sleep.png" />
     <None Remove="Assets\seal_sleepy.png" />
     <None Remove="Assets\seal_wobble.png" />
-    <None Remove="Ice_floating.png" />
   </ItemGroup>
 
   <ItemGroup>
