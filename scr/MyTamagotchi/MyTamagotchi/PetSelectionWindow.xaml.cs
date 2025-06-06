@@ -109,5 +109,26 @@ namespace MyTamagotchi
             PetListBox.ItemsSource = null;
             PetListBox.ItemsSource = pets;
         }
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is Pet petToDelete)
+            {
+                var confirm = MessageBox.Show($"Willst du wirklich '{petToDelete.Name}' löschen?", "Löschen?", MessageBoxButton.YesNo);
+                if (confirm != MessageBoxResult.Yes) return;
+
+                bool deleted = await PetApiService.DeletePetAsync(petToDelete.Id);
+                if (deleted)
+                {
+                    pets.Remove(petToDelete);
+                    PetListBox.ItemsSource = null;
+                    PetListBox.ItemsSource = pets;
+                }
+                else
+                {
+                    MessageBox.Show("Fehler beim Löschen.");
+                }
+            }
+        }
+
     }
 }

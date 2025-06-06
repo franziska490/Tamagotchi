@@ -129,13 +129,16 @@ namespace MyTamagotchi
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            myPet.Name = PetNameBox.Text;
+            myPet.OwnerId = 1; // ← GANZ WICHTIG
+
             bool success = await PetApiService.SavePetAsync(myPet);
 
             if (success)
             {
                 MessageBox.Show("Haustier erfolgreich gespeichert!");
-                PetSelectionWindow petSelectionWindow = new PetSelectionWindow();
-                petSelectionWindow.Show();
+                PetSelectionWindow sel = new PetSelectionWindow();
+                sel.Show();
                 this.Close();
             }
             else
@@ -143,6 +146,9 @@ namespace MyTamagotchi
                 MessageBox.Show("Fehler beim Speichern.");
             }
         }
+
+
+
 
 
 

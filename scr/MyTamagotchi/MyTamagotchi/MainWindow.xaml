@@ -72,6 +72,11 @@
 
             <Button Content="Save" Grid.Row="4" Height="30" Margin="0,-20,210,0" Click="SaveButton_Click"/>
             <Button Content="Back" Grid.Row="4" Height="30"  Margin="210,-20,0,0" Click="BackButton_Click"/>
+            
+
+            <TextBox Name="PetNameBox" Text="{Binding Name}" Margin="46,9,275,139" RenderTransformOrigin="0.241,0.54" />
+            <Label x:Name="___Name_" Content="Name:" Margin="0,8,354,138" FontWeight="Bold"/>
+
 
         </Grid>
     </Viewbox>

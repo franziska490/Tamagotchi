@@ -112,25 +112,46 @@ def sleep_pet(id):
         return jsonify("Pet slept"), 200
     except Exception:
         return jsonify("Error"), 500
-    
+
+# Hinzufügen   
 @app.route("/pets", methods=["POST"])
-def create_pet():
-    try:
-        data = request.json
-        cursor = db.cursor()
+def create_or_update_pet():
+    data = request.json
+    cursor = db.cursor()
+
+    # Überprüfen ob ein Tier mit demselben Namen + OwnerId existiert
+    cursor.execute("SELECT petid FROM pets WHERE name = %s AND ownerid = %s", (data["name"], data["ownerid"]))
+    existing = cursor.fetchone()
+
+    if existing:
+        # Wenn existiert → Update
+        petid = existing[0]
+        cursor.execute("""
+            UPDATE pets
+            SET hunger=%s, energy=%s, mood=%s, imagepath=%s
+            WHERE petid=%s
+        """, (data["hunger"], data["energy"], data["mood"], data["imagepath"], petid))
+    else:
+        # Sonst → Neu anlegen
         cursor.execute("""
             INSERT INTO pets (name, hunger, energy, mood, ownerid, imagepath)
             VALUES (%s, %s, %s, %s, %s, %s)
-        """, (
-            data["name"], data["hunger"], data["energy"], data["mood"],
-            data["ownerid"], data["imagepath"]
-        ))
-        db.commit()
-        return jsonify("Pet created"), 201
-    except Exception as e:
-        print("Fehler beim Speichern:", e)
-        return jsonify("Error creating pet"), 500
+        """, (data["name"], data["hunger"], data["energy"], data["mood"], data["ownerid"], data["imagepath"]))
 
+    db.commit()
+    return jsonify("OK"), 200
+
+# Löschen
+@app.route("/pets/<int:id>", methods=["DELETE"])
+def delete_pet(id):
+    try:
+        cursor = db.cursor()
+        cursor.execute("DELETE FROM pets WHERE petid = %s", (id,))
+        db.commit()
+        return jsonify("Deleted"), 200
+    except Exception as e:
+        print("Fehler beim Löschen:", e)
+        return jsonify("Fehler"), 500
 
 
 # Registrierung

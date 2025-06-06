@@ -33,17 +33,28 @@
 
         <!-- List of Saved Pets -->
         <!-- List of Saved Pets mit Bild -->
-        <ListBox Name="PetListBox" Grid.Row="1" Margin="0,0,0,37" Grid.RowSpan="2"
-         SelectionChanged="PetListBox_SelectionChanged">
+        <ListBox Name="PetListBox" Grid.Row="1" Margin="0,0,0,37" Grid.RowSpan="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <Image Source="{Binding ImageSourcePath}" Width="50" Height="50" Margin="0,0,10,0"/>
-                        <TextBlock Text="{Binding Name}" FontSize="18" VerticalAlignment="Center" FontWeight="Bold"/>
-                    </StackPanel>
+                    <Grid Margin="5" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding ImageSourcePath}" Width="50" Height="50" Margin="5"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="16" />
+                        </StackPanel>
+                        <Button Content="X" Grid.Column="1" 
+                        Width="20" Height="20" Margin="10"
+                        Tag="{Binding}" 
+                        Click="DeleteButton_Click"
+                        Background="Red" Foreground="White" FontWeight="Bold"/>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
 
 
         <!-- Header: Starter Pet -->

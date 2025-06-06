@@ -99,5 +99,12 @@ namespace MyTamagotchi.Models
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<bool> DeletePetAsync(int petId)
+        {
+            HttpResponseMessage response = await client.DeleteAsync($"http://localhost:5000/pets/{petId}");
+            return response.IsSuccessStatusCode;
+        }
+
+
     }
 }
