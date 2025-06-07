@@ -33,7 +33,8 @@
 
         <!-- List of Saved Pets -->
         <!-- List of Saved Pets mit Bild -->
-        <ListBox Name="PetListBox" Grid.Row="1" Margin="0,0,0,37" Grid.RowSpan="2">
+        
+        <ListBox Name="PetListBox" Grid.Row="1" Margin="0,0,0,37" Grid.RowSpan="2" SelectionChanged="PetListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="5" >

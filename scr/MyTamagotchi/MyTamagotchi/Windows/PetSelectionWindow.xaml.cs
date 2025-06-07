@@ -10,17 +10,19 @@ namespace MyTamagotchi
     public partial class PetSelectionWindow : Window
     {
         public List<Pet> pets = new List<Pet>();
+        private User currentUser; // ← NEU: Aktueller User
 
-        public PetSelectionWindow()
+        public PetSelectionWindow(User user)
         {
             InitializeComponent();
+            currentUser = user;
             Loaded += PetSelectionWindow_Loaded; // ← NEU: Ladeevent
         }
 
         private async void PetSelectionWindow_Loaded(object sender, RoutedEventArgs e)
         {
             // Admin sichtbar machen
-            if (LoginWindow.IsAdmin)
+            if (currentUser.IsAdmin())
                 EditButton.Visibility = Visibility.Visible;
             else
                 EditButton.Visibility = Visibility.Collapsed;
@@ -30,7 +32,7 @@ namespace MyTamagotchi
 
         private async Task LoadPets()
         {
-            int currentUserId = 1; // TODO: Vom LoginWindow übernehmen
+            int currentUserId = currentUser.Id; // TODO: Vom LoginWindow übernehmen
 
             try
             {
@@ -130,5 +132,6 @@ namespace MyTamagotchi
             }
         }
 
+        
     }
 }

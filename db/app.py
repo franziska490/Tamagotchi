@@ -181,7 +181,7 @@ def login():
 
         stored_hash = result[0].encode("utf-8")
         if bcrypt.checkpw(data["password"].encode("utf-8"), stored_hash):
-            return jsonify("Login successful"), 200
+            return jsonify(data), 200
         else:
             return jsonify("Login failed"), 401
     except Exception:
