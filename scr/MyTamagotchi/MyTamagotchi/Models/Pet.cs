@@ -12,7 +12,7 @@ namespace MyTamagotchi.Models
         public int OwnerId { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [JsonPropertyName("hunger")]
         public int Hunger { get; set; }

@@ -132,6 +132,6 @@ namespace MyTamagotchi
             }
         }
 
-        
+
     }
 }

@@ -43,7 +43,7 @@ namespace MyTamagotchi
             string username = UsernameBox.Text.Trim();
             string password = PasswordBox.Password.Trim();
 
-            User user = await PetApiService.GetUserid(username,password);
+            User user = await PetApiService.GetUserid(username, password);
 
             if (user != null)
             {
