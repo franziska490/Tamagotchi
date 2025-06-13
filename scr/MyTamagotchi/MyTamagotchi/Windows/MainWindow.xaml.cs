@@ -1,9 +1,9 @@
-﻿using MyTamagotchi.Models;
+﻿// MainWindow.xaml.cs
+using MyTamagotchi.Models;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using System.Windows.Media.Imaging;
 
 namespace MyTamagotchi
 {
@@ -11,31 +11,18 @@ namespace MyTamagotchi
     {
         private Pet myPet;
         private DispatcherTimer lifeTimer;
+        private User currentUser;
 
-        public MainWindow(Pet selectedPet)
+        public MainWindow(Pet selectedPet, User user)
         {
             InitializeComponent();
             myPet = selectedPet;
+            currentUser = user;
             StartLifeTimer();
             UpdateUI();
 
             myPet.OnGameOver += ShowGameOverScreen;
         }
-
-        //private async Task LoadPet()
-        //{
-        //    var pets = await PetApiService.GetPetsAsync();
-        //    if (pets.Count > 0)
-        //    {
-        //        myPet = pets[0];
-        //        UpdatePetImage();
-        //        UpdateUI();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Wompi, no saved pet!");
-        //    }
-        //}
 
         private void UpdatePetImage()
         {
@@ -106,7 +93,7 @@ namespace MyTamagotchi
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Play();
-            Logger.Log($"{myPet.Name} had played.");
+            Logger.Log($"{myPet.Name} hat gespielt.");
 
             if (myPet is StarterPet starter)
             {
@@ -121,7 +108,7 @@ namespace MyTamagotchi
         private async void SleepButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Sleep();
-            Logger.Log($"{myPet.Name} did sleep.");
+            Logger.Log($"{myPet.Name} hat geschlafen.");
 
             if (myPet is StarterPet starter)
             {
@@ -136,14 +123,14 @@ namespace MyTamagotchi
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Name = PetNameBox.Text;
-            myPet.OwnerId = 1; // ← GANZ WICHTIG
+            myPet.OwnerId = currentUser.Id;
 
             bool success = await PetApiService.SavePetAsync(myPet);
 
             if (success)
             {
                 MessageBox.Show("Haustier erfolgreich gespeichert!");
-                PetSelectionWindow sel = new PetSelectionWindow();
+                PetSelectionWindow sel = new PetSelectionWindow(currentUser);
                 sel.Show();
                 this.Close();
             }
@@ -155,7 +142,7 @@ namespace MyTamagotchi
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            PetSelectionWindow petSelectionWindow = new PetSelectionWindow();
+            PetSelectionWindow petSelectionWindow = new PetSelectionWindow(currentUser);
             petSelectionWindow.Show();
             this.Close();
         }
@@ -169,8 +156,5 @@ namespace MyTamagotchi
                 this.Close();
             });
         }
-
-
-
     }
 }

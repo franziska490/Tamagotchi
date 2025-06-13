@@ -10,29 +10,28 @@ namespace MyTamagotchi
     public partial class PetSelectionWindow : Window
     {
         public List<Pet> pets = new List<Pet>();
-        private User currentUser; // ← NEU: Aktueller User
+        private User currentUser;
 
         public PetSelectionWindow(User user)
         {
             InitializeComponent();
             currentUser = user;
-            Loaded += PetSelectionWindow_Loaded; // ← NEU: Ladeevent
+            Loaded += PetSelectionWindow_Loaded;
         }
 
         private async void PetSelectionWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Admin sichtbar machen
             if (currentUser.IsAdmin())
                 EditButton.Visibility = Visibility.Visible;
             else
                 EditButton.Visibility = Visibility.Collapsed;
 
-            await LoadPets(); // ← Jetzt korrekt asynchron geladen
+            await LoadPets();
         }
 
         private async Task LoadPets()
         {
-            int currentUserId = currentUser.Id; // TODO: Vom LoginWindow übernehmen
+            int currentUserId = currentUser.Id;
 
             try
             {
@@ -62,22 +61,22 @@ namespace MyTamagotchi
         {
             StarterPet defaultSeal = new StarterPet(StarterType.ChubbySeal)
             {
-                OwnerId = 1 // ← WICHTIG: muss ein existierender User in der Datenbank sein
+                OwnerId = currentUser.Id
             };
 
-            MainWindow mainWindow = new MainWindow(defaultSeal);
+            MainWindow mainWindow = new MainWindow(defaultSeal, currentUser);
             mainWindow.Show();
             this.Close();
         }
-
 
         private void PenguinButton_Click(object sender, RoutedEventArgs e)
         {
             StarterPet penguin = new StarterPet(StarterType.Pinguin)
             {
-                OwnerId = 1
+                OwnerId = currentUser.Id
             };
-            MainWindow mainWindow = new MainWindow(penguin);
+
+            MainWindow mainWindow = new MainWindow(penguin, currentUser);
             mainWindow.Show();
             this.Close();
         }
@@ -99,7 +98,7 @@ namespace MyTamagotchi
         {
             if (PetListBox.SelectedItem is Pet selectedPet)
             {
-                MainWindow mainWindow = new MainWindow(selectedPet);
+                MainWindow mainWindow = new MainWindow(selectedPet, currentUser);
                 mainWindow.Show();
                 this.Close();
             }
@@ -111,6 +110,7 @@ namespace MyTamagotchi
             PetListBox.ItemsSource = null;
             PetListBox.ItemsSource = pets;
         }
+
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is Pet petToDelete)
@@ -131,7 +131,5 @@ namespace MyTamagotchi
                 }
             }
         }
-
-
     }
 }

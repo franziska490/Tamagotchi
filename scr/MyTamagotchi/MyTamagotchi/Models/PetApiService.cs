@@ -111,15 +111,37 @@ namespace MyTamagotchi.Models
                 username = username,
                 password = password
             });
+
             StringContent content = new StringContent(userJson, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync($"http://localhost:5000/auth/login", content);
+
+            HttpResponseMessage response = await client.PostAsync("http://localhost:5000/auth/login", content);
 
             string json = await response.Content.ReadAsStringAsync();
-            User user = JsonSerializer.Deserialize<User>(json, new JsonSerializerOptions
+
+            if (!response.IsSuccessStatusCode)
             {
-                PropertyNameCaseInsensitive = true
-            });
-            return user;
+                Console.WriteLine("Fehlerhafte Serverantwort:");
+                Console.WriteLine(json);
+                return null;
+            }
+
+            try
+            {
+                User user = JsonSerializer.Deserialize<User>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                return user;
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine("Deserialisierungsfehler:");
+                Console.WriteLine(json);
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
         }
+
     }
 }
