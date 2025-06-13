@@ -163,8 +163,8 @@ namespace MyTamagotchi
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Show();
+            PetSelectionWindow petSelectionWindow = new PetSelectionWindow(currentUser);
+            petSelectionWindow.Show();
             this.Close();
         }
 
