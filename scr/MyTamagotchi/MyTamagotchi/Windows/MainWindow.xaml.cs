@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
-
+//  help
 namespace MyTamagotchi
 {
     public partial class MainWindow : Window
