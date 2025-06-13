@@ -1,0 +1,61 @@
+﻿<Window x:Class="MyTamagotchi.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowState="Maximized"
+        Background="#FF1E1E2F"
+        Title="Tamagotchi Login">
+
+    <Grid>
+        <Rectangle Fill="#1E1E2F" />
+
+        <Border Width="750" Padding="70" CornerRadius="18"
+                Background="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" ShadowDepth="5" Opacity="0.3"/>
+            </Border.Effect>
+
+            <StackPanel>
+                <TextBlock Text="Tamagotchi Login"
+                           FontSize="38" FontWeight="Bold" Foreground="#2D2D2D"
+                           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Neu hier? Erstelle ein Konto"
+                           FontSize="14" Foreground="#777"
+                           HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+                <!-- Benutzername -->
+                <TextBlock Text="Benutzername" Foreground="#333" Margin="0,0,0,6"/>
+                <TextBox Name="UsernameBox"
+                         Height="50" FontSize="16"
+                         Padding="10" Margin="0,0,0,20"
+                         TextAlignment="Left" VerticalContentAlignment="Center"
+                         Background="#FFF" BorderBrush="#CCC" BorderThickness="1"/>
+
+                <!-- Passwort -->
+                <TextBlock Text="Passwort" Foreground="#333" Margin="0,0,0,6"/>
+                <PasswordBox Name="PasswordBox"
+                             Height="50" FontSize="16"
+                             Padding="10" Margin="0,0,0,30"
+                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                             Background="#FFF" BorderBrush="#CCC" BorderThickness="1"/>
+
+                <!-- Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Log in" Click="LoginButton_Click"
+                            Background="#00C389" Foreground="White"
+                            FontWeight="Bold" FontSize="16"
+                            Height="45" Width="160" Margin="5"
+                            BorderThickness="0"/>
+
+                    <Button Content="Registrieren" Click="RegisterButton_Click"
+                            Background="#CCCCCC" Foreground="#333"
+                            FontWeight="Bold" FontSize="16"
+                            Height="45" Width="160" Margin="5"
+                            BorderThickness="0"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

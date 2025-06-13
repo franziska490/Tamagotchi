@@ -174,18 +174,23 @@ def login():
     try:
         data = request.json
         cursor = db.cursor()
-        cursor.execute("SELECT password FROM users WHERE username = %s", (data["username"],))
+        cursor.execute("SELECT userid, password, role FROM users WHERE username = %s", (data["username"],))
         result = cursor.fetchone()
         if not result:
             return jsonify("Login failed"), 401
 
-        stored_hash = result[0].encode("utf-8")
+        stored_hash = result[1].encode("utf-8")
         if bcrypt.checkpw(data["password"].encode("utf-8"), stored_hash):
-            return jsonify(data), 200
+            return jsonify({
+                "id": result[0],
+                "username": data["username"],
+                "role": result[2]
+            }), 200
         else:
             return jsonify("Login failed"), 401
     except Exception:
         return jsonify("Error"), 500
+
 
 
 
