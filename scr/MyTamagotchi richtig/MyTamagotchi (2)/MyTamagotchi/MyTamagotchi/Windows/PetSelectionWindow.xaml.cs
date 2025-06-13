@@ -8,6 +8,7 @@ using System.Windows.Controls;
 namespace MyTamagotchi
 {
     public partial class PetSelectionWindow : Window
+
     {
         public List<Pet> pets = new List<Pet>();
         private User currentUser; // ← NEU: Aktueller User
@@ -62,10 +63,10 @@ namespace MyTamagotchi
         {
             StarterPet defaultSeal = new StarterPet(StarterType.ChubbySeal)
             {
-                OwnerId = 1 // ← WICHTIG: muss ein existierender User in der Datenbank sein
+                OwnerId = currentUser.Id // ← WICHTIG: muss ein existierender User in der Datenbank sein
             };
 
-            MainWindow mainWindow = new MainWindow(defaultSeal);
+            MainWindow mainWindow = new MainWindow(defaultSeal, currentUser);
             mainWindow.Show();
             this.Close();
         }
@@ -75,12 +76,14 @@ namespace MyTamagotchi
         {
             StarterPet penguin = new StarterPet(StarterType.Pinguin)
             {
-                OwnerId = 1
+                OwnerId = currentUser.Id
             };
-            MainWindow mainWindow = new MainWindow(penguin);
+
+            MainWindow mainWindow = new MainWindow(penguin, currentUser);
             mainWindow.Show();
             this.Close();
         }
+
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
@@ -99,10 +102,11 @@ namespace MyTamagotchi
         {
             if (PetListBox.SelectedItem is Pet selectedPet)
             {
-                MainWindow mainWindow = new MainWindow(selectedPet);
+                MainWindow mainWindow = new MainWindow(selectedPet, currentUser);
                 mainWindow.Show();
                 this.Close();
             }
+
         }
 
         public void AddPet(Pet newPet)

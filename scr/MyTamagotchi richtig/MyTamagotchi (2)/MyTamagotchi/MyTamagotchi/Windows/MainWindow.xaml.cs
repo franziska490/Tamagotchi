@@ -1,5 +1,6 @@
 ﻿using MyTamagotchi.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -9,33 +10,43 @@ namespace MyTamagotchi
 {
     public partial class MainWindow : Window
     {
+        private DispatcherTimer lifeTimer = new DispatcherTimer();
+        private User currentUser;
         private Pet myPet;
-        private DispatcherTimer lifeTimer;
+        private List<Pet> pets = new();
 
-        public MainWindow(Pet selectedPet)
+        public MainWindow(Pet selectedPet, User user)
         {
             InitializeComponent();
             myPet = selectedPet;
+            currentUser = user;
+
             StartLifeTimer();
             UpdateUI();
-
             myPet.OnGameOver += ShowGameOverScreen;
+
+            Loaded += async (s, e) => await LoadUserPets(); // Haustiere laden nach Start
         }
 
-        //private async Task LoadPet()
-        //{
-        //    var pets = await PetApiService.GetPetsAsync();
-        //    if (pets.Count > 0)
-        //    {
-        //        myPet = pets[0];
-        //        UpdatePetImage();
-        //        UpdateUI();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Wompi, no saved pet!");
-        //    }
-        //}
+        private async Task LoadUserPets()
+        {
+            try
+            {
+                pets = await PetApiService.GetOwnerPets(currentUser.Id);
+                if (pets == null || pets.Count == 0)
+                {
+                    MessageBox.Show("Keine Haustiere gefunden.");
+                }
+                else
+                {
+                    Logger.Log($"{pets.Count} Haustiere für {currentUser.Username} geladen.");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Fehler beim Laden der Haustiere.");
+            }
+        }
 
         private void UpdatePetImage()
         {
@@ -59,7 +70,7 @@ namespace MyTamagotchi
             lifeTimer.Start();
         }
 
-        private void LifeTimer_Tick(object sender, EventArgs e)
+        private void LifeTimer_Tick(object? sender, EventArgs e)
         {
             myPet.Hunger = Math.Max(myPet.Hunger - 10, 0);
             myPet.Energy = Math.Max(myPet.Energy - 8, 0);
@@ -106,7 +117,7 @@ namespace MyTamagotchi
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Play();
-            Logger.Log($"{myPet.Name} had played.");
+            Logger.Log($"{myPet.Name} hat gespielt.");
 
             if (myPet is StarterPet starter)
             {
@@ -121,7 +132,7 @@ namespace MyTamagotchi
         private async void SleepButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Sleep();
-            Logger.Log($"{myPet.Name} did sleep.");
+            Logger.Log($"{myPet.Name} schläft.");
 
             if (myPet is StarterPet starter)
             {
@@ -136,27 +147,24 @@ namespace MyTamagotchi
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Name = PetNameBox.Text;
-            myPet.OwnerId = 1; // ← GANZ WICHTIG
+            myPet.OwnerId = currentUser.Id;
 
             bool success = await PetApiService.SavePetAsync(myPet);
 
             if (success)
             {
                 MessageBox.Show("Haustier erfolgreich gespeichert!");
-                PetSelectionWindow sel = new PetSelectionWindow();
-                sel.Show();
-                this.Close();
             }
             else
             {
                 MessageBox.Show("Fehler beim Speichern.");
             }
         }
-    
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            PetSelectionWindow petSelectionWindow = new PetSelectionWindow();
-            petSelectionWindow.Show();
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
             this.Close();
         }
 
@@ -169,8 +177,5 @@ namespace MyTamagotchi
                 this.Close();
             });
         }
-
-        
-        
     }
 }
