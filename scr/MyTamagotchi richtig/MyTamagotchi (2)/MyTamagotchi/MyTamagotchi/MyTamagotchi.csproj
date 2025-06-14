@@ -15,6 +15,7 @@
     <None Remove="Assets\fibsh4.png" />
     <None Remove="Assets\fibsh5.png" />
     <None Remove="Assets\fibsh6.png" />
+    <None Remove="Assets\Gifs\Dance.gif" />
     <None Remove="Assets\Nom\fibsh2.png" />
     <None Remove="Assets\Nom\krabbe.png" />
     <None Remove="Assets\Nom\kugelfibsh.png" />
@@ -34,12 +35,14 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\fibsh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Gifs\Dance.gif" />
     <Resource Include="Assets\Nom\fibsh3.png" />
     <Resource Include="Assets\Nom\fibsh4.png" />
     <Resource Include="Assets\Nom\fibsh5.png" />
