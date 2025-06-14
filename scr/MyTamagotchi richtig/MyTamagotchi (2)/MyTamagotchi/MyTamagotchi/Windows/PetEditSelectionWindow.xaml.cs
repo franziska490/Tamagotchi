@@ -20,12 +20,20 @@ namespace MyTamagotchi
     public partial class PetEditSelectionWindow : Window
     {
         private PetSelectionWindow parentWindow;
+        List<User> users = new List<User>();
 
         public PetEditSelectionWindow(PetSelectionWindow parent)
         {
             InitializeComponent();
             parentWindow = parent;
+            Loaded += PetEditSelectionWindow_Loaded; // Event-Handler für das Laden des Fensters
         }
+        private async void PetEditSelectionWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            users = await PetApiService.GetUsersAsync();
+            UserListBox.ItemsSource = users;
+        }
+        
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -79,5 +87,29 @@ namespace MyTamagotchi
         {
             this.Close();
         }
+
+        private async void DeleteUsersButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (sender is Button btn && btn.Tag is User userToDelete)
+            {
+                var confirm = MessageBox.Show("Willst du wirklich den User löschen?", "Löschen?", MessageBoxButton.YesNo);
+                if (confirm != MessageBoxResult.Yes) return;
+                bool deleted = await PetApiService.DeleteUsers(userToDelete.Id);
+
+                if (deleted)
+                {
+                    users.Remove(userToDelete);
+                    UserListBox.ItemsSource = null;
+                    UserListBox.ItemsSource = users;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Fehler beim Löschen des Users.");
+            }
+        }
+
+       
     }
 }

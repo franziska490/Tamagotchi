@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -132,5 +133,23 @@ namespace MyTamagotchi.Models
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<bool> DeleteUsers(int userId)
+        {
+            HttpResponseMessage response = await client.DeleteAsync($"http://localhost:5000/users/{userId}");
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<List<User>> GetUsersAsync()
+        {
+            HttpResponseMessage response = await client.GetAsync("http://localhost:5000/users");
+            string json = await response.Content.ReadAsStringAsync();
+            List<User> users = JsonSerializer.Deserialize<List<User>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return users ?? new List<User>();
+            //Anderst:
+            //if (users == null){return new List<User>();} else{return users;}
+        }
     }
 }

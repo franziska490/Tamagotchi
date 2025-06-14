@@ -12,10 +12,7 @@ namespace MyTamagotchi.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string Role { get; set; } // "admin" oder "user"
-        
-        
-
-
+               
         public User(int id,string username, string password, string role)
         {
             Id = id;
@@ -34,6 +31,10 @@ namespace MyTamagotchi.Models
             {
                 return false;
             }
+        }
+         public override string ToString()
+        {
+            return $"{Username} ({Role})";
         }
     }
 }

@@ -116,7 +116,7 @@ namespace MyTamagotchi
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            myPet.Play();
+            myPet.Play(); // interne Logik: Mood + Energie + Hunger anpassen
             Logger.Log($"{myPet.Name} hat gespielt.");
 
             if (myPet is StarterPet starter)
@@ -126,8 +126,13 @@ namespace MyTamagotchi
             }
 
             await Task.Delay(1500);
-            UpdateUI();
-        }
+            UpdateUI(); // normale Anzeige aktualisieren
+
+            MiniGame.OnFinished += UpdateUI; // automatische UI-Aktualisierung nach Spiel
+            MiniGame.Start(myPet);           // Minispiel starten
+        }      
+
+
 
         private async void SleepButton_Click(object sender, RoutedEventArgs e)
         {

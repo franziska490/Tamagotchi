@@ -38,6 +38,20 @@ def get_pets():
 
     return jsonify(pets), 200
 
+@app.route("/users", methods=["GET"])
+def get_users():
+    cursor = db.cursor()
+    cursor.execute("SELECT* FROM users")
+    rows = cursor.fetchall()
+    users=[]
+    for row in rows:
+        users.append({
+           "id": row[0],
+           "username": row[1],
+           "role": row[3]
+       }) 
+    return jsonify(users), 200              
+
 # Einzelnes Haustier abrufen
 @app.route("/pets/<id>", methods=["GET"])
 def get_pet(id):
@@ -191,8 +205,17 @@ def login():
     except Exception:
         return jsonify("Error"), 500
 
-
-
-
+# Delete User
+@app.route("/users/<id>", methods=["DELETE"])
+def userdelete(id):
+    try:
+        cursor = db.cursor()
+        cursor.execute("DELETE FROM users WHERE userid = %s", (id,))
+        db.commit()
+        return jsonify("Deleted"), 200
+    except Exception as e:
+        print("Fehler beim Löschen:", e)
+        return jsonify("Fehler"), 500
+                       
 if __name__ == '__main__':
     app.run()

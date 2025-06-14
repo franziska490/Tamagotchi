@@ -63,7 +63,7 @@ namespace MyTamagotchi
         {
             StarterPet defaultSeal = new StarterPet(StarterType.ChubbySeal)
             {
-                OwnerId = currentUser.Id // ← WICHTIG: muss ein existierender User in der Datenbank sein
+                OwnerId = currentUser.Id //  WICHTIG: muss ein existierender User in der Datenbank sein
             };
 
             MainWindow mainWindow = new MainWindow(defaultSeal, currentUser);

@@ -1,6 +1,7 @@
 ﻿<Window x:Class="MyTamagotchi.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MyTamagotchi"
         Title="My Tamagotchi"
         WindowState="Maximized"
         ResizeMode="CanResize">
@@ -78,6 +79,8 @@
             <Button Content="Back" Grid.Row="4" Height="30"  Margin="210,-20,0,0" Click="BackButton_Click"/>
             <TextBox Name="PetNameBox" Text="{Binding Name}" Margin="46,9,275,139" RenderTransformOrigin="0.241,0.54" />
             <Label x:Name="___Name_" Content="Name:" Margin="0,8,354,138" FontWeight="Bold"/>
+
+            <local:MiniGameOverlayControl x:Name="MiniGame" Panel.ZIndex="99"/>
         </Grid>
     </Viewbox>
 </Window>
