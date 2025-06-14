@@ -3,17 +3,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using MyTamagotchi.Models;
 
 namespace MyTamagotchi
 {
     public partial class MiniGameOverlayControl : UserControl
     {
-        private DispatcherTimer? timer;
-        private DateTime startTime;
         private Pet? petRef;
         private int clickCount = 0;
+        private Random rnd = new();
 
         public event Action? OnFinished;
 
@@ -28,54 +26,41 @@ namespace MyTamagotchi
             petRef = pet;
             clickCount = 0;
             this.Visibility = Visibility.Visible;
-
-            GameText.Text = "Warte...";
-            ClickImage.Visibility = Visibility.Collapsed;
-
-            ClickImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/ClickImage.png"));
-
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(new Random().Next(1, 3));
-            timer.Tick += Timer_Tick;
-            timer.Start();
+            ClickImage.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/fibsh6.png", UriKind.Absolute));
+            NextImagePosition();
         }
 
-        private void Timer_Tick(object? sender, EventArgs e)
+        private void NextImagePosition()
         {
-            timer?.Stop();
-            GameText.Text = "Klick jetzt!";
             ClickImage.Visibility = Visibility.Visible;
-            startTime = DateTime.Now;
+
+            double maxX = Math.Max(0, ActualWidth - ClickImage.Width);
+            double maxY = Math.Max(0, ActualHeight - ClickImage.Height);
+
+            double x = rnd.NextDouble() * maxX;
+            double y = rnd.NextDouble() * maxY;
+
+            Canvas.SetLeft(ClickImage, x);
+            Canvas.SetTop(ClickImage, y);
         }
 
-        private async void ClickImage_MouseLeftButtonDown(object? sender, MouseButtonEventArgs e)
+        private void ClickImage_MouseLeftButtonDown(object? sender, MouseButtonEventArgs e)
         {
-            TimeSpan reaction = DateTime.Now - startTime;
-            ClickImage.Visibility = Visibility.Collapsed;
-
             if (petRef == null) return;
 
-            if (reaction.TotalMilliseconds < 500)
-                petRef.Mood = Math.Min(petRef.Mood + 10, 100);
-            else
-                petRef.Mood = Math.Max(petRef.Mood - 5, 0);
-
-            GameText.Text = $"Reaktion: {reaction.TotalMilliseconds:F0} ms";
-
+            petRef.Mood = Math.Min(petRef.Mood + 10, 100);
             clickCount++;
 
             if (clickCount >= 5)
             {
-                await Task.Delay(1000);
+                ClickImage.Visibility = Visibility.Collapsed;
                 this.Visibility = Visibility.Collapsed;
                 OnFinished?.Invoke();
-                return;
             }
-
-            await Task.Delay(1000);
-            GameText.Text = "Warte...";
-            timer!.Interval = TimeSpan.FromSeconds(new Random().Next(1, 3));
-            timer.Start();
+            else
+            {
+                NextImagePosition();
+            }
         }
     }
 }

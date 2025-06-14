@@ -61,7 +61,7 @@ namespace MyTamagotchi.Models
 
         public void Play()
         {
-            Mood = Math.Min(Mood + 30, 100);
+            //Mood = Math.Min(Mood + 30, 100);
             Energy = Math.Max(Energy - 10, 0);
             CheckGameOver();
         }

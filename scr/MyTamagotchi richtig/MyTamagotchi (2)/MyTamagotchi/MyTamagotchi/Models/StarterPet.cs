@@ -55,7 +55,7 @@ namespace MyTamagotchi.Models
                 return;
             }
 
-            if (Mood < 50)
+            if (Mood < 70)
             {
                 PetImage = LoadImage("sad");
                 return;

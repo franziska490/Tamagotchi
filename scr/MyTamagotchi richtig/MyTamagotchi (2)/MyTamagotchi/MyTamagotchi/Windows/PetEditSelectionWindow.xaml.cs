@@ -26,90 +26,98 @@ namespace MyTamagotchi
         {
             InitializeComponent();
             parentWindow = parent;
-            Loaded += PetEditSelectionWindow_Loaded; // Event-Handler für das Laden des Fensters
+            Loaded += PetEditSelectionWindow_Loaded; 
         }
         private async void PetEditSelectionWindow_Loaded(object sender, RoutedEventArgs e)
         {
             users = await PetApiService.GetUsersAsync();
             UserListBox.ItemsSource = users;
         }
-        
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            ErrorTextBlock.Text = "";
+
             string petName = NameBox.Text.Trim();
 
-            // Name darf nicht leer und nur Buchstaben sein
             if (string.IsNullOrWhiteSpace(petName) || !Regex.IsMatch(petName, @"^[a-zA-Z]+$"))
             {
-                MessageBox.Show("Nuhu thats not a Name!");
+                ErrorTextBlock.Text = "Invalid name: letters only.";
+                Logger.Log("Invalid pet name input.");
                 return;
             }
 
-            // Neues Pet erstellen
             Pet newPet = new Pet(petName);
 
-            // Verfallraten prüfen
             if (!int.TryParse(HungerRateBox.Text, out int hungerRate) || hungerRate < 1 || hungerRate > 20)
             {
-                MessageBox.Show("Number between 1-20");
+                ErrorTextBlock.Text = "Invalid hunger value: must be 1–20.";
+                Logger.Log("Invalid hunger decrease rate.");
                 return;
             }
-
             if (!int.TryParse(EnergyRateBox.Text, out int energyRate) || energyRate < 1 || energyRate > 20)
             {
-                MessageBox.Show("Number between 1-20");
+                ErrorTextBlock.Text = "Invalid energy value: must be 1–20.";
+                Logger.Log("Invalid energy decrease rate.");
                 return;
             }
-
             if (!int.TryParse(MoodRateBox.Text, out int moodRate) || moodRate < 1 || moodRate > 20)
             {
-                MessageBox.Show("Number between 1-20");
+                ErrorTextBlock.Text = "Invalid mood value: must be 1–20.";
+                Logger.Log("Invalid mood decrease rate.");
                 return;
             }
 
-            // Werte setzen
             newPet.HungerDecreaseRate = hungerRate;
             newPet.EnergyDecreaseRate = energyRate;
             newPet.MoodDecreaseRate = moodRate;
 
-            // Pet dem Parent Window hinzufügen
             parentWindow.AddPet(newPet);
-
-            // Log schreiben
-            Logger.Log($"New Pet: {newPet.Name})");
-
-            // Fenster schließen
-            this.Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            Logger.Log($"New pet created: {newPet.Name}");
+            Close();
         }
 
         private async void DeleteUsersButton_Click(object sender, RoutedEventArgs e)
         {
+            ErrorTextBlock.Text = "";
 
             if (sender is Button btn && btn.Tag is User userToDelete)
             {
-                var confirm = MessageBox.Show("Willst du wirklich den User löschen?", "Löschen?", MessageBoxButton.YesNo);
-                if (confirm != MessageBoxResult.Yes) return;
-                bool deleted = await PetApiService.DeleteUsers(userToDelete.Id);
+                bool deleted = false;
+                try
+                {
+                    deleted = await PetApiService.DeleteUsers(userToDelete.Id);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Error deleting user: " + ex.Message);
+                    ErrorTextBlock.Text = "Error delet.";
+                    return;
+                }
 
                 if (deleted)
                 {
                     users.Remove(userToDelete);
                     UserListBox.ItemsSource = null;
                     UserListBox.ItemsSource = users;
+                    Logger.Log($"User deleted: {userToDelete.Username}");
+                }
+                else
+                {
+                    ErrorTextBlock.Text = "Delete failed.";
+                    Logger.Log($"Delete attempt failed: {userToDelete.Username}");
                 }
             }
             else
             {
-                MessageBox.Show("Fehler beim Löschen des Users.");
+                ErrorTextBlock.Text = "Invalid user selection.";
+                Logger.Log("Invalid tag in DeleteUsersButton_Click");
             }
         }
 
-       
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

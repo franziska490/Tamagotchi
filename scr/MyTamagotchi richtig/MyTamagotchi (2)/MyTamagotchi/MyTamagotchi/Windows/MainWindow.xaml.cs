@@ -20,31 +20,32 @@ namespace MyTamagotchi
             InitializeComponent();
             myPet = selectedPet;
             currentUser = user;
-
             StartLifeTimer();
             UpdateUI();
             myPet.OnGameOver += ShowGameOverScreen;
-
-            Loaded += async (s, e) => await LoadUserPets(); // Haustiere laden nach Start
+            Loaded += async (s, e) => await LoadUserPets(); //Haustiere laden nach Start
         }
 
         private async Task LoadUserPets()
         {
+            ErrorTextBlock.Text = "";
             try
             {
                 pets = await PetApiService.GetOwnerPets(currentUser.Id);
                 if (pets == null || pets.Count == 0)
                 {
-                    MessageBox.Show("Keine Haustiere gefunden.");
+                    //ErrorTextBlock.Text = "No pets found.";
+                    Logger.Log("No pets for user " + currentUser.Username);
                 }
                 else
                 {
-                    Logger.Log($"{pets.Count} Haustiere für {currentUser.Username} geladen.");
+                    Logger.Log($"{pets.Count} pets loaded for {currentUser.Username}.");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Fehler beim Laden der Haustiere.");
+                ErrorTextBlock.Text = "Error loading pets.";
+                Logger.Log("Error loading pets: " + ex.Message);
             }
         }
 
@@ -69,13 +70,11 @@ namespace MyTamagotchi
             lifeTimer.Tick += LifeTimer_Tick;
             lifeTimer.Start();
         }
-
         private void LifeTimer_Tick(object? sender, EventArgs e)
         {
             myPet.Hunger = Math.Max(myPet.Hunger - 10, 0);
             myPet.Energy = Math.Max(myPet.Energy - 8, 0);
-            myPet.Mood = Math.Max(myPet.Mood - 4, 0);
-
+            myPet.Mood = Math.Max(myPet.Mood - 7, 0);
             UpdateUI();
             myPet.CheckGameOver();
         }
@@ -100,8 +99,8 @@ namespace MyTamagotchi
 
             if (result == true && foodWindow.SelectedItem != null)
             {
-                foodWindow.SelectedItem.ApplyTo(myPet);
-                Logger.Log($"{myPet.Name} hat {foodWindow.SelectedItem.Name} gegessen.");
+                myPet.Feed();
+                Logger.Log($"{myPet.Name} has {foodWindow.SelectedItem.Name} eaten."); 
 
                 if (myPet is StarterPet starter)
                 {
@@ -117,7 +116,7 @@ namespace MyTamagotchi
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Play();
-            Logger.Log($"{myPet.Name} hat gespielt.");
+            Logger.Log($"{myPet.Name} played.");
 
             if (myPet is StarterPet starter)
             {
@@ -133,13 +132,10 @@ namespace MyTamagotchi
             MiniGame.Start(myPet);
         }
 
-
-
-
         private async void SleepButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Sleep();
-            Logger.Log($"{myPet.Name} schläft.");
+            Logger.Log($"{myPet.Name} is sleeping.");
 
             if (myPet is StarterPet starter)
             {
@@ -153,23 +149,35 @@ namespace MyTamagotchi
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            ErrorTextBlock.Text = "";
             myPet.Name = PetNameBox.Text;
             myPet.OwnerId = currentUser.Id;
 
-            bool success = await PetApiService.SavePetAsync(myPet);
-
-            if (success)
+            try
             {
-                MessageBox.Show("Haustier erfolgreich gespeichert!");
+                bool success = await PetApiService.SavePetAsync(myPet);
+                if (success)
+                {
+                    ErrorTextBlock.Text = "Pet saved.";
+                    Logger.Log($"Pet {myPet.Name} saved.");
+                }
+                else
+                {
+                    ErrorTextBlock.Text = "Error saving pet.";
+                    Logger.Log($"Error saving {myPet.Name}.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Fehler beim Speichern.");
+                ErrorTextBlock.Text = "Server error while saving.";
+                Logger.Log("Saving failed: " + ex.Message);
             }
         }
 
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            myPet.OnGameOver -= ShowGameOverScreen; // verhindert GameOver beim absichtlichen Verlassen
             PetSelectionWindow petSelectionWindow = new PetSelectionWindow(currentUser);
             petSelectionWindow.Show();
             this.Close();

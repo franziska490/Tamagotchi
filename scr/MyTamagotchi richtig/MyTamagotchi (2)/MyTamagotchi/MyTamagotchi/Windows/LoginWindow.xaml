@@ -4,27 +4,26 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowState="Maximized"
-        Background="#FF1E1E2F"
+        Background="#FFEEEFEF"
         Title="Tamagotchi Login">
 
     <Grid>
-        <Rectangle Fill="#1E1E2F" />
-        <Border Width="750" Padding="70" CornerRadius="18"
-                Background="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Rectangle Fill="#FFB8D4E2" />
+        <Border Width="750" Padding="70" CornerRadius="18" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="15" ShadowDepth="5" Opacity="0.3"/>
             </Border.Effect>
 
             <StackPanel>
-                <TextBlock Text="Tamagotchi Login"
+                <TextBlock Text="pet or regret Login"
                            FontSize="38" FontWeight="Bold" Foreground="#2D2D2D"
                            HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
-                <TextBlock Text="Neu hier? Erstelle ein Konto"
+                <TextBlock Text="New here? Create an account"
                            FontSize="14" Foreground="#777"
                            HorizontalAlignment="Center" Margin="0,0,0,30"/>
                 <!--Error-->
-                <TextBlock x:Name="ErrorTextBlock" Foreground="Red" FontSize="14" TextWrapping="Wrap" Height="27" Width="388"/>
+                <TextBlock x:Name="ErrorTextBlock" Foreground="Red" FontSize="14" TextWrapping="Wrap" Height="27" Width="268"/>
 
                 <!-- Benutzername -->
                 <TextBlock Text="Benutzername" Foreground="#333" Margin="0,0,0,6"/>

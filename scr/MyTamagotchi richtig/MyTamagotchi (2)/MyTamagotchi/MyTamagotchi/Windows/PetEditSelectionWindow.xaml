@@ -27,6 +27,18 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!--Error-->
+        <TextBlock x:Name="ErrorTextBlock" Foreground="Red" FontSize="14" TextWrapping="Wrap" Margin="46,6,40,58" RenderTransformOrigin="0.5,0.5" Grid.Row="4">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        </TextBlock>
+
         <StackPanel Grid.Row="0" Margin="0,0,0,15">
             <TextBlock Text="Name:" FontSize="16" Margin="0,0,0,5"/>
             <TextBox Name="NameBox" FontSize="14" Height="30"/>
@@ -79,7 +91,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
-        
+
+
     </Grid>
 </Window>
