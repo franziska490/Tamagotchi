@@ -32,9 +32,9 @@ namespace MyTamagotchi.Models
                 return false;
             }
         }
-         public override string ToString()
+        public override string ToString()
         {
-            return $"{Username} ({Role})";
+           return $"{Username} ({Role})";
         }
     }
 }

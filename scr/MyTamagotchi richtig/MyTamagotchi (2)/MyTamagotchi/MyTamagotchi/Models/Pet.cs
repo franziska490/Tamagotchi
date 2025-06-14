@@ -25,8 +25,7 @@ namespace MyTamagotchi.Models
 
         [JsonPropertyName("imagepath")]
         public string ImagePath { get; set; } = "/Assets/default_happy.png";
-
-        // Bildpfad für WPF-Ressourcensystem (pack://...)
+       
         public string ImageSourcePath
         {
             get
@@ -37,6 +36,7 @@ namespace MyTamagotchi.Models
                 return $"pack://application:,,,{ImagePath}";
             }
         }
+
 
         public int HungerDecreaseRate { get; set; } = 2;
         public int EnergyDecreaseRate { get; set; } = 2;

@@ -19,31 +19,33 @@ namespace MyTamagotchi
         {
             string username = UsernameBox.Text.Trim();
             string password = PasswordBox.Password.Trim();
+            ErrorTextBlock.Text = "";
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Benutzername und Passwort dürfen nicht leer sein!", "Fehler");
+                ErrorTextBlock.Text = "Username and password can't be empty.";
+                Logger.Log("Empty login input.");
                 return;
             }
 
             try
             {
-                User? user = await PetApiService.GetUserid(username, password);
-
+                User user = await PetApiService.GetUserid(username, password);
                 if (user != null)
                 {
-                    PetSelectionWindow petSelectionWindow = new PetSelectionWindow(user);
-                    petSelectionWindow.Show();
-                    this.Close();
+                    new PetSelectionWindow(user).Show();
+                    Close();
                 }
                 else
                 {
-                    MessageBox.Show("Login fehlgeschlagen. Benutzername oder Passwort ist falsch.", "Fehler");
+                    ErrorTextBlock.Text = "Login failed. Wrong username or password.";
+                    Logger.Log("Login failed for user: " + username);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Serverfehler beim Login:\n" + ex.Message, "Fehler");
+                ErrorTextBlock.Text = "Fehler beim Serverzugriff.";
+                Logger.Log("Login Fehler: " + ex.Message);
             }
         }
 
@@ -51,29 +53,32 @@ namespace MyTamagotchi
         {
             string username = UsernameBox.Text.Trim();
             string password = PasswordBox.Password.Trim();
+            ErrorTextBlock.Text = "";
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Benutzername und Passwort dürfen nicht leer sein!", "Fehler");
+                ErrorTextBlock.Text = "Username and password can't be empty.";
+                Logger.Log("Empty login input.");
                 return;
             }
-
             try
             {
                 bool success = await PetApiService.RegisterUser(username, password);
-
                 if (success)
                 {
-                    MessageBox.Show("Registrierung erfolgreich! Jetzt einloggen.", "Info");
+                    ErrorTextBlock.Text = "Registration successful. Please log in.";
+                    Logger.Log("Registration successful for: " + username);
                 }
                 else
                 {
-                    MessageBox.Show("Benutzername bereits vergeben oder Fehler bei Registrierung.", "Fehler");
+                    ErrorTextBlock.Text = "Username taken or error.";
+                    Logger.Log("Registration failed for: " + username);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Serverfehler bei Registrierung:\n" + ex.Message, "Fehler");
+                ErrorTextBlock.Text = "Server error.";
+                Logger.Log("Registration error: " + ex.Message);
             }
         }
     }

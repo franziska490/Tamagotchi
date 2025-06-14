@@ -9,7 +9,6 @@
 
     <Grid>
         <Rectangle Fill="#1E1E2F" />
-
         <Border Width="750" Padding="70" CornerRadius="18"
                 Background="White" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Border.Effect>
@@ -24,6 +23,8 @@
                 <TextBlock Text="Neu hier? Erstelle ein Konto"
                            FontSize="14" Foreground="#777"
                            HorizontalAlignment="Center" Margin="0,0,0,30"/>
+                <!--Error-->
+                <TextBlock x:Name="ErrorTextBlock" Foreground="Red" FontSize="14" TextWrapping="Wrap" Height="27" Width="388"/>
 
                 <!-- Benutzername -->
                 <TextBlock Text="Benutzername" Foreground="#333" Margin="0,0,0,6"/>
@@ -55,6 +56,7 @@
                             Height="45" Width="160" Margin="5"
                             BorderThickness="0"/>
                 </StackPanel>
+
             </StackPanel>
         </Border>
     </Grid>

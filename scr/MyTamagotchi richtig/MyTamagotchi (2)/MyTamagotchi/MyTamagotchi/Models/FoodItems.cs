@@ -22,8 +22,6 @@ namespace MyTamagotchi.Models
         {
             return new BitmapImage(new Uri($"pack://application:,,,/Assets/Nom/{ImagePath}", UriKind.Absolute));
         }
-
-
         public void ApplyTo(Pet pet)
         {
             pet.Hunger = Math.Min(100, pet.Hunger + HungerRestore);

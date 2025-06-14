@@ -13,7 +13,7 @@ namespace MyTamagotchi.Models
     {
         private static readonly HttpClient client = new HttpClient();
 
-        // Holt ALLE Haustiere von der API
+        //Alle Haustiere von der API
         public static async Task<List<Pet>> GetPetsAsync()
         {
             try
@@ -34,7 +34,7 @@ namespace MyTamagotchi.Models
             }
         }
 
-        // Holt NUR die Haustiere eines bestimmten Users
+        //Haustiere eines bestimmten Users
         public static async Task<List<Pet>> GetOwnerPets(int ownerid)
         {
             HttpResponseMessage response = await client.GetAsync($"http://localhost:5000/pets?ownerid={ownerid}");
