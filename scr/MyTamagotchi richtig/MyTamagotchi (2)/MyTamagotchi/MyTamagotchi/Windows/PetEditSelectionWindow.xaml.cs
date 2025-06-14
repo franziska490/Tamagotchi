@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using System.Runtime.ConstrainedExecution;
 namespace MyTamagotchi
 {
     
@@ -81,6 +82,10 @@ namespace MyTamagotchi
         {
             ErrorTextBlock.Text = "";
 
+            // Ist sender ein Button?
+            // Ist die Tag-Eigenschaft dieses Buttons ein Objekt vom Typ User?
+            // btn = der Button, der das Event ausgelöst hat.
+            // userToDelete = das User - Objekt, das im Button gespeichert war.
             if (sender is Button btn && btn.Tag is User userToDelete)
             {
                 bool deleted = false;

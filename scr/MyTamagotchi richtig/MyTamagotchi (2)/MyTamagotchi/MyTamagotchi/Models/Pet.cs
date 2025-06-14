@@ -50,7 +50,7 @@ namespace MyTamagotchi.Models
             Mood = 100;
         }
 
-        public Pet() { } // WICHTIG für JSON-Deserialisierung!
+        public Pet() { } 
 
         public void Feed()
         {
@@ -73,12 +73,15 @@ namespace MyTamagotchi.Models
             CheckGameOver();
         }
 
-        public event Action? OnGameOver;
+        // Ereignis = GameOver; Bedingung erfüllt = nächster Teil wird ausgeführt
+        public event Action? OnGameOver; 
 
         public void CheckGameOver()
         {
+            // Einer der Werte 0 = GameOver Screen
             if (Hunger == 0 || Mood == 0 || Energy == 0)
             {
+                // Ereignis tritt ein (Invoke)
                 OnGameOver?.Invoke();
             }
         }

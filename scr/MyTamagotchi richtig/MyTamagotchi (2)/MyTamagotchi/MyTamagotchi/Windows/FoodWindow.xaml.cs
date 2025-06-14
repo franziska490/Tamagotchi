@@ -50,6 +50,7 @@ namespace MyTamagotchi
                     Close();
                 };
 
+                // Ímage Element in die Benutzeroberfläche einfügen
                 FoodPanel.Children.Add(img);
             }
 

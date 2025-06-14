@@ -5,6 +5,9 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using MyTamagotchi.Models;
 
+// collapsed: bleibt im Specher und kann wieder sichtbar gemacht werden
+// close(): wird beendet und muss neu erstellt werden
+
 namespace MyTamagotchi
 {
     public partial class MiniGameOverlayControl : UserControl
@@ -15,9 +18,11 @@ namespace MyTamagotchi
 
         public event Action? OnFinished;
 
+
         public MiniGameOverlayControl()
         {
             InitializeComponent();
+            // Unsichtbar aber nicht geschlossen
             this.Visibility = Visibility.Collapsed;
         }
 

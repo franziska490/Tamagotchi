@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
+using System.Windows.Shapes;
+
+// async: Methode kann weiterlaufen ohne die Anwendung zu blockieren
+// await: Wartet darauf das die Aufgabe fertig ist
 
 namespace MyTamagotchi
 {
@@ -127,7 +132,7 @@ namespace MyTamagotchi
             await Task.Delay(1500);
             UpdateUI();
 
-            MiniGame.OnFinished -= UpdateUI; // doppelte Bindung verhindern
+            MiniGame.OnFinished -= UpdateUI; // → Die Methode wird mehrmals aufgerufen, jedes Mal wenn das Event feuert.
             MiniGame.OnFinished += UpdateUI;
             MiniGame.Start(myPet);
         }
@@ -185,6 +190,9 @@ namespace MyTamagotchi
 
         private void ShowGameOverScreen()
         {
+            // Erzwingt die Ausführung im UI-Thread.
+            // Notwendig, wenn du dich gerade nicht im UI - Thread befindest(z.B.aus einem Hintergrundthread heraus).
+            // Invoke blockiert bis die Aktion abgeschlossen ist (im Gegensatz zu BeginInvoke).
             Dispatcher.Invoke(() =>
             {
                 var gameOverWindow = new GameOverWindow();

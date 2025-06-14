@@ -6,11 +6,18 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
+
+
+// Daten vorbereiten (JSON)
+// HTTP - Request senden
+// Antwort lesen und verarbeiten
 
 namespace MyTamagotchi.Models
 {
     public class PetApiService
     {
+        // Der Static Client verhindert resourcen Probleme und wird für alle Anwedungen verwendet
         private static readonly HttpClient client = new HttpClient();
 
         //Alle Haustiere von der API
@@ -58,7 +65,7 @@ namespace MyTamagotchi.Models
                 hunger = updatePet.Hunger,
                 energy = updatePet.Energy,
                 mood = updatePet.Mood,
-                imagepath = updatePet.ImagePath  // WICHTIG!
+                imagepath = updatePet.ImagePath  
             });
 
             StringContent content = new StringContent(updatedpets, Encoding.UTF8, "application/json");

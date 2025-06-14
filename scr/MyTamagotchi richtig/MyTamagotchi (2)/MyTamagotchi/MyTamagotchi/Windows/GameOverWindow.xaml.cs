@@ -15,11 +15,11 @@ namespace MyTamagotchi
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Starte animation
+            // Startet Animation
             var shock = (Storyboard)FindResource("ShockTextStoryboard");
             shock.Begin(GameOverText, true);
 
-            // Nach 1 Sekunde: freeze den Text auf Rot
+            // Erstellt einen Timer
             var freeze = new DispatcherTimer();
             freeze.Interval = TimeSpan.FromSeconds(1.0);
             freeze.Tick += (s, args) =>
