@@ -48,7 +48,7 @@
                            HorizontalAlignment="Center"
                            Margin="0,0,0,40"/>
 
-                <Button Content="Spiel beenden"
+                <Button Content="Close Game"
                         Width="400"
                         Height="100"
                         FontSize="36"

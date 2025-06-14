@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\ClickImage.png" />
     <None Remove="Assets\dead_seal.png" />
     <None Remove="Assets\fibsh.png" />
     <None Remove="Assets\Nom\fibsh2.png" />
@@ -32,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\ClickImage.png" />
     <Resource Include="Assets\fibsh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

@@ -22,7 +22,7 @@ namespace MyTamagotchi
             {
                 new FoodItem("Fisch", 30, 10, "fibsh.png"),
                 new FoodItem("Melone", 15, 20, "fibsh2.png"),
-                //new FoodItem("Eis", 10, 30, "Assets/icecream.png"),
+                
             };
 
             foreach (var food in foodList)
