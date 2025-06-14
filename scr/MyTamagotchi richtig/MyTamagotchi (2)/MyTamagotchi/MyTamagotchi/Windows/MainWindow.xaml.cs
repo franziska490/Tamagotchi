@@ -44,7 +44,7 @@ namespace MyTamagotchi
             }
             catch (Exception ex)
             {
-                ErrorTextBlock.Text = "Error loading pets.";
+                ErrorTextBlock.Text = "Error loading pets. Uwu";
                 Logger.Log("Error loading pets: " + ex.Message);
             }
         }
@@ -158,12 +158,12 @@ namespace MyTamagotchi
                 bool success = await PetApiService.SavePetAsync(myPet);
                 if (success)
                 {
-                    ErrorTextBlock.Text = "Pet saved.";
+                    ErrorTextBlock.Text = "Pet saved! :D";
                     Logger.Log($"Pet {myPet.Name} saved.");
                 }
                 else
                 {
-                    ErrorTextBlock.Text = "Error saving pet.";
+                    ErrorTextBlock.Text = "Error saving pet! OwO";
                     Logger.Log($"Error saving {myPet.Name}.");
                 }
             }

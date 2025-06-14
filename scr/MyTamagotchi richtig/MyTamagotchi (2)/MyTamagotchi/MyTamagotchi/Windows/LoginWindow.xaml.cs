@@ -23,7 +23,7 @@ namespace MyTamagotchi
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                ErrorTextBlock.Text = "Username and password can't be empty.";
+                ErrorTextBlock.Text = "Username and password can't be empty!";
                 Logger.Log("Empty login input.");
                 return;
             }
@@ -38,14 +38,14 @@ namespace MyTamagotchi
                 }
                 else
                 {
-                    ErrorTextBlock.Text = "Login failed. Wrong username or password.";
+                    ErrorTextBlock.Text = "Login failed. Wrong username or password! TwT";
                     Logger.Log("Login failed for user: " + username);
                 }
             }
             catch (Exception ex)
             {
-                ErrorTextBlock.Text = "Fehler beim Serverzugriff.";
-                Logger.Log("Login Fehler: " + ex.Message);
+                ErrorTextBlock.Text = "Server error!";
+                Logger.Log("Login failed: " + ex.Message);
             }
         }
 
@@ -57,7 +57,7 @@ namespace MyTamagotchi
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                ErrorTextBlock.Text = "Username and password can't be empty.";
+                ErrorTextBlock.Text = "Username and password can't be empty!";
                 Logger.Log("Empty login input.");
                 return;
             }
@@ -66,18 +66,18 @@ namespace MyTamagotchi
                 bool success = await PetApiService.RegisterUser(username, password);
                 if (success)
                 {
-                    ErrorTextBlock.Text = "Registration successful. Please log in.";
+                    ErrorTextBlock.Text = "Registration successful. Please log in! :D";
                     Logger.Log("Registration successful for: " + username);
                 }
                 else
                 {
-                    ErrorTextBlock.Text = "Username taken or error.";
+                    ErrorTextBlock.Text = "Username taken or error! :/";
                     Logger.Log("Registration failed for: " + username);
                 }
             }
             catch (Exception ex)
             {
-                ErrorTextBlock.Text = "Server error.";
+                ErrorTextBlock.Text = "Server error!";
                 Logger.Log("Registration error: " + ex.Message);
             }
         }

@@ -5,100 +5,66 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowState="Maximized"
-        Background="#FFB1BFCE">
+        Background="#FFE6EDF3">
 
     <Grid>
-        <Rectangle Fill="#FFB1BFCE" />
+        <!-- Hintergrund-Deko -->
+        <Ellipse Fill="#FFCADBF1" Width="300" Height="300" Margin="50,-100,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.2"/>
+        <Ellipse Fill="#FFFAD3DC" Width="250" Height="250" Margin="0,0,100,-50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.2"/>
 
-        <Border Width="800" Padding="40" CornerRadius="18"
-                VerticalAlignment="Center" HorizontalAlignment="Center"
-                Background="#FFB8C5D2" Height="519">
+        <!-- Zentrale Karte -->
+        <Border Width="820" Height="600" Background="#FFB1BFCE" CornerRadius="18" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="25" BorderBrush="#FFD0D7E0" BorderThickness="1">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="15" ShadowDepth="5" Opacity="0.3"/>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.25"/>
             </Border.Effect>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <!-- Header & Close -->
-                    <RowDefinition Height="*"/>
-                    <!-- Pet List -->
-                    <RowDefinition Height="Auto"/>
-                    <!-- Starter Header -->
-                    <RowDefinition Height="Auto"/>
-                    <!-- Seal Button -->
-                    <RowDefinition Height="Auto"/>
-                    <!-- Penguin Button -->
-                    <RowDefinition Height="Auto"/>
-                    <!-- Admin Button -->
-                </Grid.RowDefinitions>
+            <DockPanel LastChildFill="True">
+                <!-- Header -->
+                <StackPanel DockPanel.Dock="Top" Margin="0,0,0,15">
+                    <DockPanel>
+                        <TextBlock Text="🐾 Select Your Pet :3" FontSize="26" FontWeight="Bold" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        <Button Content="×" Click="CancelButton_Click" Background="#FFD66A6A" Foreground="White" Margin="450,2,0,1"  Width="35" Height="29"/>
+                    </DockPanel>
 
-                <!-- Close Button -->
-                <Button Content="X" Width="40" Height="30" HorizontalAlignment="Right"
-                        VerticalAlignment="Top" Click="CancelButton_Click"
-                        Background="#FFAC4646" Grid.Row="0" Margin="0,0,0,10"/>
+                </StackPanel>
 
-                <!-- Saved Pets Header -->
-                <TextBlock Text="Your saved pets :3" FontSize="24" FontWeight="Bold"
-                           Margin="10,5,0,5" HorizontalAlignment="Left" Grid.Row="0"/>
+                <!-- Liste & Starter nebeneinander -->
+                <Grid DockPanel.Dock="Top" Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
 
-                <!-- Pet List -->
-                <ListBox Name="PetListBox" Margin="0,12,0,15" SelectionChanged="PetListBox_SelectionChanged" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Background="#FF657392">
-                    <ListBox.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleY="-1"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </ListBox.RenderTransform>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding ImageSourcePath}" Width="50" Height="50" Margin="5"/>
-                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
-                                </StackPanel>
-                                <Button Content="X" Grid.Column="1" Width="20" Height="20" Margin="10"
-                                        Tag="{Binding}" Click="DeleteButton_Click" Foreground="White" FontWeight="Bold" Background="#FFAC4646"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    <!-- Pet-Liste -->
+                    <ListBox Name="PetListBox" SelectionChanged="PetListBox_SelectionChanged" Background="#FFF5F7FA" Grid.Column="0" Margin="0,0,15,0" Height="470" VerticalAlignment="Top">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="White" BorderBrush="#FFDCE1E7" BorderThickness="1" CornerRadius="6" Margin="5">
+                                    <DockPanel>
+                                        <Image Source="{Binding ImageSourcePath}" Width="45" Height="45" Margin="10,5" DockPanel.Dock="Left"/>
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold"/>
+                                        <Button Content="✖" Width="25" Height="25" DockPanel.Dock="Right" Margin="10" Tag="{Binding}" Click="DeleteButton_Click" Background="#FFD66A6A" Foreground="White" FontWeight="Bold"/>
+                                    </DockPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-                <!-- Starter Header -->
-                <TextBlock Text="Starter Pet:" FontSize="24" FontWeight="Bold"
-                           HorizontalAlignment="Center" Margin="0,10" Grid.Row="2"/>
-                <!--Error-->
-                <TextBlock x:Name="ErrorTextBlock" Foreground="Red" FontSize="14" TextWrapping="Wrap" Height="27" Margin="307,7,166,8"/>
+                    <!-- Starter-Auswahl -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                        <TextBlock Text="🐣 Starter Pets" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <Button Name="SealButton" Content="Chubby Seal" Height="50" Margin="0,0,0,10" Click="SealButton_Click"
+                                Background="#FFD8F0FF" BorderBrush="#FF90CAF9" FontWeight="Bold"/>
+                        <Button Name="PenguinButton" Content="Penguin" Height="50" Margin="0,0,0,10" Click="PenguinButton_Click"
+                                Background="#FFE0F7FA" BorderBrush="#FF4DD0E1" FontWeight="Bold"/>
+                        <Button Name="EditButton" Content="Paw Center" Height="50" Margin="0,10,0,0" Click="EditButton_Click"
+                                Background="#FFEEF4F8" BorderBrush="#FFB0BEC5" FontWeight="Bold"/>
+                    </StackPanel>
 
-                <!-- Seal Button -->
-                <Button Name="SealButton" Content="Chubby Seal" Height="50" Width="171" Margin="183,29,0,44"
-                        HorizontalAlignment="Left" Click="SealButton_Click"
-                        FontWeight="Bold" BorderBrush="#FFC8E3FF" Grid.Row="4">
-                    <Button.Background>
-                        <ImageBrush/>
-                    </Button.Background>
-                </Button>
-
-                <!-- Penguin Button -->
-                <Button Name="PenguinButton" Content="Penguin" Width="165" Margin="391,31,0,44"
-                        HorizontalAlignment="Left" Click="PenguinButton_Click"
-                        FontWeight="Bold" BorderBrush="#FFC8E3FF" Grid.Row="4">
-                    <Button.Background>
-                        <ImageBrush/>
-                    </Button.Background>
-                </Button>
-
-                <!-- Admin Button -->
-                <Button Name="EditButton" Content="Paw Center" Height="50" Width="250" Margin="0,10"
-                        HorizontalAlignment="Center" Click="EditButton_Click"
-                        FontWeight="Bold" BorderBrush="#FF7996B5" Background="#FFB1BFCE" Grid.Row="5"/>
-            </Grid>
+                    <!-- Error-->
+                    <TextBlock x:Name="ErrorTextBlock" Foreground="#FFD66A6A" FontSize="20" Margin="55,329,55,108" Grid.Column="1" FontWeight="Bold"/>
+                </Grid>
+            </DockPanel>
         </Border>
     </Grid>
 </Window>

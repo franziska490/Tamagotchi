@@ -40,13 +40,13 @@ namespace MyTamagotchi
                 pets = await PetApiService.GetOwnerPets(currentUserId);
                 if (pets == null)
                 {
-                    ErrorTextBlock.Text = "Did not pets :C.";
+                    ErrorTextBlock.Text = "No pets :C.";
                     Logger.Log("Null returned by GetOwnerPets for user ID: " + currentUserId);
                     return;
                 }
                 if (pets.Count == 0)
                 {
-                    ErrorTextBlock.Text = "No pets found.";
+                    ErrorTextBlock.Text = "Huh no pets found! :O.";
                     Logger.Log("No pets found for user ID: " + currentUserId);
                     return;
                 }
@@ -55,7 +55,7 @@ namespace MyTamagotchi
             }
             catch (Exception ex)
             {
-                ErrorTextBlock.Text = "No pets where loaded.";
+                ErrorTextBlock.Text = "No pets where loaded! :<";
                 Logger.Log("Load Pets: " + ex.Message);
             }
         }
@@ -128,7 +128,7 @@ namespace MyTamagotchi
                 }
                 catch (Exception ex)
                 {
-                    ErrorTextBlock.Text = "Error deleting pet.";
+                    ErrorTextBlock.Text = "Error deleting pet!";
                     Logger.Log("DeletePetAsync error: " + ex.Message);
                     return;
                 }
@@ -142,7 +142,7 @@ namespace MyTamagotchi
                 }
                 else
                 {
-                    ErrorTextBlock.Text = "Delete failed.";
+                    ErrorTextBlock.Text = "Delete failed! :o";
                     Logger.Log($"Delete failed for pet: {petToDelete.Name}");
                 }
             }

@@ -23,7 +23,7 @@
                            FontSize="14" Foreground="#777"
                            HorizontalAlignment="Center" Margin="0,0,0,30"/>
                 <!--Error-->
-                <TextBlock x:Name="ErrorTextBlock" Foreground="Red" FontSize="14" TextWrapping="Wrap" Height="27" Width="268"/>
+                <TextBlock x:Name="ErrorTextBlock" Foreground="#FFD66A6A" FontSize="14" TextWrapping="Wrap" Height="30" Width="310"/>
 
                 <!-- Benutzername -->
                 <TextBlock Text="Benutzername" Foreground="#333" Margin="0,0,0,6"/>
@@ -49,7 +49,7 @@
                             Height="45" Width="160" Margin="5"
                             BorderThickness="0"/>
 
-                    <Button Content="Registrieren" Click="RegisterButton_Click"
+                    <Button Content="Register" Click="RegisterButton_Click"
                             Background="#CCCCCC" Foreground="#333"
                             FontWeight="Bold" FontSize="16"
                             Height="45" Width="160" Margin="5"
