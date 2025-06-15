@@ -48,7 +48,12 @@ namespace MyTamagotchi.Models
             Hunger = 100;
             Energy = 100;
             Mood = 100;
+
+            HungerDecreaseRate = 10;
+            EnergyDecreaseRate = 8;
+            MoodDecreaseRate = 7;
         }
+
 
         public Pet() { } 
 
