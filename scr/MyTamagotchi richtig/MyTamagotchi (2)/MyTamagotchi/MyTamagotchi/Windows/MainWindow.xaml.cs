@@ -132,7 +132,9 @@ namespace MyTamagotchi
             await Task.Delay(1500);
             UpdateUI();
 
-            MiniGame.OnFinished -= UpdateUI; // → Die Methode wird mehrmals aufgerufen, jedes Mal wenn das Event feuert.
+            // Die Methode wird mehrmals aufgerufen, jedes Mal wenn das Event feuert.
+            // Um zu verhindern, dass das Event mehrfach aufgerufen wird, entfernen wir es zuerst.
+            MiniGame.OnFinished -= UpdateUI; 
             MiniGame.OnFinished += UpdateUI;
             MiniGame.Start(myPet);
         }
@@ -165,6 +167,10 @@ namespace MyTamagotchi
                 {
                     ErrorTextBlock.Text = "Pet saved! :D";
                     Logger.Log($"Pet {myPet.Name} saved.");
+
+                    Igel.Visibility = Visibility.Visible;
+                    await Task.Delay(2000);
+                    Igel.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
