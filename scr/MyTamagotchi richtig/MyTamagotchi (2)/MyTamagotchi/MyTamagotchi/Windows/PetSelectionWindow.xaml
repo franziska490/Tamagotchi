@@ -24,7 +24,7 @@
                 <StackPanel DockPanel.Dock="Top" Margin="0,0,0,15">
                     <DockPanel>
                         <TextBlock Text="🐾 Select Your Pet :3" FontSize="26" FontWeight="Bold" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                        <Button Content="×" Click="CancelButton_Click" Background="#FFD66A6A" Foreground="White" Margin="450,2,0,1"  Width="35" Height="29"/>
+                        <Button Content="❌" Click="CancelButton_Click" Background="#FFD66A6A" Foreground="White" Margin="450,2,0,1"  Width="35" Height="29"/>
                     </DockPanel>
 
                 </StackPanel>
