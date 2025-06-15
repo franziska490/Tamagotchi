@@ -21,6 +21,14 @@
     <None Remove="Assets\Nom\kugelfibsh.png" />
     <None Remove="Assets\Nom\manyfibsh.png" />
     <None Remove="Assets\pinguin.png" />
+    <None Remove="Assets\pinguin_dead.png" />
+    <None Remove="Assets\pinguin_happy.png" />
+    <None Remove="Assets\pinguin_happy2.png" />
+    <None Remove="Assets\pinguin_hungry.png" />
+    <None Remove="Assets\pinguin_nom.png" />
+    <None Remove="Assets\pinguin_sad.png" />
+    <None Remove="Assets\pinguin_sleep.png" />
+    <None Remove="Assets\pinguin_sleppy.png" />
     <None Remove="Assets\seal_dead.png" />
     <None Remove="Assets\seal_error.png" />
     <None Remove="Assets\seal_happy.png" />
@@ -31,6 +39,15 @@
     <None Remove="Assets\seal_sleep.png" />
     <None Remove="Assets\seal_sleepy.png" />
     <None Remove="Assets\seal_wobble.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\pinguin_dead.png" />
+    <Resource Include="Assets\pinguin_happy.png" />
+    <Resource Include="Assets\pinguin_happy2.png" />
+    <Resource Include="Assets\pinguin_hungry.png" />
+    <Resource Include="Assets\pinguin_nom.png" />
+    <Resource Include="Assets\pinguin_sad.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +71,8 @@
     <Resource Include="Assets\Nom\krabbe.png" />
     <Resource Include="Assets\Nom\kugelfibsh.png" />
     <Resource Include="Assets\Nom\manyfibsh.png" />
+    <Resource Include="Assets\pinguin_sleep.png" />
+    <Resource Include="Assets\pinguin_sleppy.png" />
     <Resource Include="Assets\seal_dead.png" />
     <Resource Include="Assets\seal_error.png" />
     <Resource Include="Assets\seal_happy.png" />

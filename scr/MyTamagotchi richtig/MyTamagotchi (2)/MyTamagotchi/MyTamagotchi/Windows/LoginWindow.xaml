@@ -15,7 +15,7 @@
             </Border.Effect>
 
             <StackPanel>
-                <TextBlock Text="pet or regret Login"
+                <TextBlock Text="Pet or Regret Login"
                            FontSize="38" FontWeight="Bold" Foreground="#2D2D2D"
                            HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
