@@ -77,12 +77,18 @@ namespace MyTamagotchi
         }
         private void LifeTimer_Tick(object? sender, EventArgs e)
         {
-            myPet.Hunger = Math.Max(myPet.Hunger - 10, 0);
-            myPet.Energy = Math.Max(myPet.Energy - 8, 0);
-            myPet.Mood = Math.Max(myPet.Mood - 7, 0);
+            int hungerRate = myPet.HungerDecreaseRate > 0 ? myPet.HungerDecreaseRate : 10;
+            int energyRate = myPet.EnergyDecreaseRate > 0 ? myPet.EnergyDecreaseRate : 8;
+            int moodRate = myPet.MoodDecreaseRate > 0 ? myPet.MoodDecreaseRate : 7;
+
+            myPet.Hunger = Math.Max(myPet.Hunger - hungerRate, 0);
+            myPet.Energy = Math.Max(myPet.Energy - energyRate, 0);
+            myPet.Mood = Math.Max(myPet.Mood - moodRate, 0);
+
             UpdateUI();
             myPet.CheckGameOver();
         }
+
 
         private void UpdateUI()
         {
