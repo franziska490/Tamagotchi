@@ -35,7 +35,7 @@ namespace MyTamagotchi
             UserListBox.ItemsSource = users;
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             ErrorTextBlock.Text = "";
 
@@ -43,40 +43,45 @@ namespace MyTamagotchi
 
             if (string.IsNullOrWhiteSpace(petName) || !Regex.IsMatch(petName, @"^[a-zA-Z]+$"))
             {
-                ErrorTextBlock.Text = "Invalid name: letters only.";
-                Logger.Log("Invalid pet name input.");
+                ErrorTextBlock.Text = "Invalid name! letters only!";
                 return;
             }
 
-            Pet newPet = new Pet(petName);
-
-            if (!int.TryParse(HungerRateBox.Text, out int hungerRate) || hungerRate < 1 || hungerRate > 20)
+            if (UserListBox.SelectedItem is not User selectedUser)
             {
-                ErrorTextBlock.Text = "Invalid hunger value: must be 1–20.";
-                Logger.Log("Invalid hunger decrease rate.");
-                return;
-            }
-            if (!int.TryParse(EnergyRateBox.Text, out int energyRate) || energyRate < 1 || energyRate > 20)
-            {
-                ErrorTextBlock.Text = "Invalid energy value: must be 1–20.";
-                Logger.Log("Invalid energy decrease rate.");
-                return;
-            }
-            if (!int.TryParse(MoodRateBox.Text, out int moodRate) || moodRate < 1 || moodRate > 20)
-            {
-                ErrorTextBlock.Text = "Invalid mood value: must be 1–20.";
-                Logger.Log("Invalid mood decrease rate.");
+                ErrorTextBlock.Text = "Please select a user! :)";
                 return;
             }
 
-            newPet.HungerDecreaseRate = hungerRate;
-            newPet.EnergyDecreaseRate = energyRate;
-            newPet.MoodDecreaseRate = moodRate;
+            if (!int.TryParse(HungerRateBox.Text, out int hungerRate) || hungerRate < 1 || hungerRate > 20 ||
+                !int.TryParse(EnergyRateBox.Text, out int energyRate) || energyRate < 1 || energyRate > 20 ||
+                !int.TryParse(MoodRateBox.Text, out int moodRate) || moodRate < 1 || moodRate > 20)
+            {
+                ErrorTextBlock.Text = "Values between 1–20! ";
+                return;
+            }
+
+            Pet newPet = new Pet(petName)
+            {
+                OwnerId = selectedUser.Id,
+                HungerDecreaseRate = hungerRate,
+                EnergyDecreaseRate = energyRate,
+                MoodDecreaseRate = moodRate
+            };
+
+            bool success = await PetApiService.SavePetAsync(newPet);
+            if (!success)
+            {
+                ErrorTextBlock.Text = "Error saving pet! O_O";
+                return;
+            }
 
             parentWindow.AddPet(newPet);
-            Logger.Log($"New pet created: {newPet.Name}");
+            Logger.Log($"New pet '{newPet.Name}' created for {selectedUser.Username}");
             Close();
         }
+
+
 
         private async void DeleteUsersButton_Click(object sender, RoutedEventArgs e)
         {

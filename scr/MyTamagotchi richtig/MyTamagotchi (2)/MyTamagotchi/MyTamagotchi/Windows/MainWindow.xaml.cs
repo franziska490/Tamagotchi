@@ -49,7 +49,7 @@ namespace MyTamagotchi
             }
             catch (Exception ex)
             {
-                ErrorTextBlock.Text = "Error loading pets. Uwu";
+                ErrorTextBlock.Text = "Error loading pets. :o";
                 Logger.Log("Error loading pets: " + ex.Message);
             }
         }
@@ -174,7 +174,7 @@ namespace MyTamagotchi
                 }
                 else
                 {
-                    ErrorTextBlock.Text = "Error saving pet! OwO";
+                    ErrorTextBlock.Text = "Error saving pet! O_O";
                     Logger.Log($"Error saving {myPet.Name}.");
                 }
             }

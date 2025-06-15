@@ -8,7 +8,7 @@
         Title="Tamagotchi Login">
 
     <Grid>
-        <Rectangle Fill="#FFB8D4E2" />
+        <Rectangle Fill="#B5C1CF" />
         <Border Width="750" Padding="70" CornerRadius="18" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="15" ShadowDepth="5" Opacity="0.3"/>

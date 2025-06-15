@@ -73,16 +73,16 @@
 
                 <!-- Eingabe -->
                 <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                    <TextBlock Text="Name:" FontSize="14" Foreground="#333"/>
+                    <TextBlock Text="   Name" FontSize="14" Foreground="#333"/>
                     <TextBox x:Name="NameBox"/>
 
-                    <TextBlock Text="Hunger in %" FontSize="14" Foreground="#333"/>
+                    <TextBlock Text="% Hunger" FontSize="14" Foreground="#333"/>
                     <TextBox x:Name="HungerRateBox"/>
 
-                    <TextBlock Text="Energie in %" FontSize="14" Foreground="#333"/>
+                    <TextBlock Text="% Energy" FontSize="14" Foreground="#333"/>
                     <TextBox x:Name="EnergyRateBox"/>
 
-                    <TextBlock Text="Stimmung in %" FontSize="14" Foreground="#333"/>
+                    <TextBlock Text="% Mood" FontSize="14" Foreground="#333"/>
                     <TextBox x:Name="MoodRateBox"/>
                 </StackPanel>
 
