@@ -64,7 +64,7 @@
 
                     <!-- Error-->
                     <TextBlock x:Name="ErrorTextBlock" Foreground="#FFD66A6A" FontSize="20" Margin="139,338,139,99" FontWeight="Bold"/>
-                    <Image gif:ImageBehavior.AnimatedSource="pack://application:,,,/Assets/Gifs/Dance.gif" Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,249,0,0" Grid.Column="1"/>
+                    <Image gif:ImageBehavior.AnimatedSource="pack://application:,,,/Assets/Gifs/Sea.gif" Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,249,0,0" Grid.Column="1"/>
                 </Grid>
             </DockPanel>
         </Border>

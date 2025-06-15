@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyTamagotchi.Models;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -8,9 +9,11 @@ namespace MyTamagotchi
 {
     public partial class GameOverWindow : Window
     {
-        public GameOverWindow()
+        private User currentUser;
+        public GameOverWindow(User user)
         {
             InitializeComponent();
+            currentUser = user;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -33,7 +36,11 @@ namespace MyTamagotchi
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            //Application.Current.Shutdown();
+            PetSelectionWindow back = new PetSelectionWindow(currentUser);
+            back.Show();
+            this.Close();
+
         }
     }
 }
