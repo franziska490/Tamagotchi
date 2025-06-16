@@ -204,7 +204,7 @@ namespace MyTamagotchi
             // Invoke blockiert bis die Aktion abgeschlossen ist (im Gegensatz zu BeginInvoke).
             Dispatcher.Invoke(() =>
             {
-                var gameOverWindow = new GameOverWindow(currentUser);
+                var gameOverWindow = new GameOverWindow(currentUser, myPet);
                 gameOverWindow.Show();
                 this.Close();
             });

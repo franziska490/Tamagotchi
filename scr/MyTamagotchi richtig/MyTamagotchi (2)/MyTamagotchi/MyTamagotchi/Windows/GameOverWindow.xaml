@@ -25,11 +25,12 @@
     <Grid Background="Black">
         <Viewbox Stretch="Uniform">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="80">
-                <Image Source="/Assets/seal_dead.png"
+                <Image x:Name="DeadImage"
                        Stretch="Uniform"
                        Width="800"
                        Height="500"
                        Margin="0,0,0,40"/>
+
 
                 <TextBlock x:Name="GameOverText"
                            Text="Game Over"

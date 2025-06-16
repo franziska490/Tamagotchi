@@ -39,35 +39,47 @@ namespace MyTamagotchi.Models
         {
             if (Mood == 0 || Energy == 0 || Hunger == 0)
             {
+                ImagePath = $"/Assets/{GetPrefix()}_dead.png";
                 PetImage = LoadImage("dead");
                 return;
             }
 
             if (Hunger < 50)
             {
+                ImagePath = $"/Assets/{GetPrefix()}_hungry.png";
                 PetImage = LoadImage("hungry");
                 return;
             }
 
             if (Energy < 50)
             {
+                ImagePath = $"/Assets/{GetPrefix()}_sleepy.png";
                 PetImage = LoadImage("sleepy");
                 return;
             }
 
             if (Mood < 70)
             {
+                ImagePath = $"/Assets/{GetPrefix()}_sad.png";
                 PetImage = LoadImage("sad");
                 return;
             }
 
+            ImagePath = $"/Assets/{GetPrefix()}_happy.png";
             PetImage = LoadImage("happy");
         }
 
         public void SetActionImage(string action)
         {
+            ImagePath = $"/Assets/{GetPrefix()}_{action}.png";
             PetImage = LoadImage(action);
         }
+
+
+        //public void SetActionImage(string action)
+        //{
+        //    PetImage = LoadImage(action);
+        //}
 
         private static string GetNameFromType(StarterType type)
         {
