@@ -7,9 +7,15 @@ info:
 paths:
   /pets:
     get:
-      tags:
-        - Abrufen
-      summary: Alle Haustiere abrufen
+      tags: [Abrufen]
+      summary: Alle Haustiere abrufen (optional nach OwnerID)
+      parameters:
+        - name: ownerid
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: ID des Besitzers
       responses:
         '200':
           description: Tiere erfolgreich abgerufen
@@ -26,11 +32,34 @@ paths:
               schema:
                 type: string
                 example: Error
+    post:
+      tags: [Erstellen]
+      summary: Haustier erstellen oder aktualisieren
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetInput"
+      responses:
+        '200':
+          description: Tier erstellt oder aktualisiert
+          content:
+            application/json:
+              schema:
+                type: string
+                example: OK
+        '500':
+          description: Fehler
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Error
 
   /pets/{id}:
     get:
-      tags:
-        - Abrufen
+      tags: [Abrufen]
       summary: Ein Tier abrufen über PetID
       parameters:
         - name: id
@@ -60,10 +89,8 @@ paths:
               schema:
                 type: string
                 example: Error
-
     put:
-      tags:
-        - Update
+      tags: [Update]
       summary: Haustier aktualisieren
       parameters:
         - name: id
@@ -76,16 +103,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                hunger:
-                  type: integer
-                energy:
-                  type: integer
-                mood:
-                  type: integer
+              $ref: "#/components/schemas/PetInput"
       responses:
         '200':
           description: Haustier erfolgreich aktualisiert
@@ -94,13 +112,6 @@ paths:
               schema:
                 type: string
                 example: Pet updated
-        '404':
-          description: Haustier nicht gefunden
-          content:
-            application/json:
-              schema:
-                type: string
-                example: Update failed
         '500':
           description: Fehler beim Update
           content:
@@ -108,11 +119,34 @@ paths:
               schema:
                 type: string
                 example: Error
+    delete:
+      tags: [Löschen]
+      summary: Haustier löschen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Gelöscht
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Deleted
+        '500':
+          description: Fehler
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Fehler
 
   /pets/{id}/feed:
     post:
-      tags:
-        - Aktionen
+      tags: [Aktionen]
       summary: Haustier füttern (Hunger steigt)
       parameters:
         - name: id
@@ -136,7 +170,7 @@ paths:
                 type: string
                 example: Feed failed
         '500':
-          description: Fehler beim Füttern
+          description: Fehler
           content:
             application/json:
               schema:
@@ -145,8 +179,7 @@ paths:
 
   /pets/{id}/play:
     post:
-      tags:
-        - Aktionen
+      tags: [Aktionen]
       summary: Mit Haustier spielen (Mood steigt)
       parameters:
         - name: id
@@ -170,7 +203,7 @@ paths:
                 type: string
                 example: Play failed
         '500':
-          description: Fehler beim Spielen
+          description: Fehler
           content:
             application/json:
               schema:
@@ -179,8 +212,7 @@ paths:
 
   /pets/{id}/sleep:
     post:
-      tags:
-        - Aktionen
+      tags: [Aktionen]
       summary: Haustier schläft (Energie steigt)
       parameters:
         - name: id
@@ -204,29 +236,63 @@ paths:
                 type: string
                 example: Sleep failed
         '500':
-          description: Fehler beim Schlafen
+          description: Fehler
           content:
             application/json:
               schema:
                 type: string
                 example: Error
 
+  /users:
+    get:
+      tags: [Benutzer]
+      summary: Alle Benutzer abrufen
+      responses:
+        '200':
+          description: Benutzer erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+  /users/{id}:
+    delete:
+      tags: [Benutzer]
+      summary: Benutzer und zugehörige Haustiere löschen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Gelöscht
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Deleted
+        '500':
+          description: Fehler
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Fehler
+
   /auth/register:
     post:
-      tags:
-        - Anmeldung
+      tags: [Anmeldung]
       summary: Benutzer registrieren
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
+              $ref: "#/components/schemas/Auth"
       responses:
         '201':
           description: Registrierung erfolgreich
@@ -236,7 +302,7 @@ paths:
                 type: string
                 example: User registered
         '500':
-          description: Fehler bei der Registrierung
+          description: Fehler
           content:
             application/json:
               schema:
@@ -245,28 +311,28 @@ paths:
 
   /auth/login:
     post:
-      tags:
-        - Anmeldung
+      tags: [Anmeldung]
       summary: Benutzer einloggen
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
+              $ref: "#/components/schemas/Auth"
       responses:
         '200':
           description: Login erfolgreich
           content:
             application/json:
               schema:
-                type: string
-                example: Login successful
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  role:
+                    type: string
         '401':
           description: Falsche Zugangsdaten
           content:
@@ -275,7 +341,7 @@ paths:
                 type: string
                 example: Login failed
         '500':
-          description: Fehler beim Login
+          description: Fehler
           content:
             application/json:
               schema:
@@ -289,26 +355,46 @@ components:
       properties:
         petid:
           type: integer
-          example: 1
-        ownerid:
-          type: integer
-          example: 1
         name:
           type: string
-          example: seali
         hunger:
           type: integer
-          example: 80
         energy:
           type: integer
-          example: 60
         mood:
           type: integer
-          example: 30
-      required:
-        - petid
-        - ownerid
-        - name
-        - hunger
-        - energy
-        - mood
+        ownerid:
+          type: integer
+        imagepath:
+          type: string
+    PetInput:
+      type: object
+      properties:
+        name:
+          type: string
+        hunger:
+          type: integer
+        energy:
+          type: integer
+        mood:
+          type: integer
+        ownerid:
+          type: integer
+        imagepath:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        role:
+          type: string
+    Auth:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
