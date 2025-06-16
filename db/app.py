@@ -210,6 +210,9 @@ def login():
 def userdelete(id):
     try:
         cursor = db.cursor()
+        # Zuerst Haustiere löschen
+        cursor.execute("DELETE FROM pets WHERE ownerid = %s", (id,))
+        # Dann User löschen
         cursor.execute("DELETE FROM users WHERE userid = %s", (id,))
         db.commit()
         return jsonify("Deleted"), 200
