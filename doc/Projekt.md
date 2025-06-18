@@ -1,130 +1,165 @@
-# Pos Projekt
-## Teammitglieder
-- Laura
-- Franziska
-## Idee
-- Tamagotchi App
-## Wie werden die Mindestanforderungen umgesetzt?
-### Frontend (POS)
-- **3 Fenster:**
-  1. Login/Register Fenster
-  2. Auswahl Fenster
-  3. Hauptfenster (Tamagotchi)
-  4. EditorFenster (Hunger, Energie, Stimmung ändern)
-- **Grafische Anwendung:** Darstellung des Haustiers als Bild und Statusanzeigen (ProgressBars)
-- **Vererbung:** Basis-Klasse `Pet`, abgeleitete Klassen je nach Tierart
-- **Interfaces:** z.B. `IFeedable`, `IPlayable`, `ISleepable`
-- **Logging:** Log-Datei über Aktionen wie "gefüttert", "gespielt", "geschlafen"
-- **Unit Tests:** Kleine Tests für Status-Logik (z.B. Fütterung erhöht Energie)
-- **GIT:** Projektverwaltung auf GitHub
+# Projektdokumentation – Pet or Regret - API & Backend
 
-### Backend (DBI)
-- **MariaDB** als Datenbank
-                                                                                                      - **Mind. 3 Tabellen:**
-                                                                                                      - `Users` (ID,Name, Passwort)
-                                                                                                      - `Pets` (ID, Name, Hunger, Energie, Stimmung, UserID)
-                                                                                                      - `Actions` (ID, PetID, ActionType, Timestamp)
-- **REST API:** C# Backend, Übergabe der Daten im JSON-Format
-- **Swagger Dokumentation:** Dokumentation der REST-Schnittstellen
-- **Benutzerrollen:** "Admin" (kann alle Tiere bearbeiten) und "User" (nur eigenes Tier betreuen)
-- **Unit Tests + Logging** auch im Backend
+## Projekttagebuch
+### Backend
+| Name              | Tätigkeit                                                                 |
+|-------------------|---------------------------------------------------------------------------|
+| Laura Rützler     | Datenbankschema `pets`, `actions` entworfen und implementiert             |
+|                   | Dazugehörige Endpoints in `app.py`                                        |
+|                   | Swagger-YAML erstellt                                                     |
+|                   | Fehlerbehandlung, Feed/Sleep/Play-Logik                                   |
+|                   | REST-Schnittstelle mit Frontend verbunden                                 |
+| Franziska Greunig | Normalform `users` und Endpoints in `app.py`                              |
+|                   | Passwort-Hashing mit bcrypt                                               |
+|                   | Swagger-YAML ergänzt                                                      |
+|                   | REST-Schnittstelle mit Frontend verbunden für `user`                      |
+### Frontend
+| Name              | Tätigkeit                                                                 |
+|-------------------|---------------------------------------------------------------------------|
+| Laura Rützler     | Petlogik, OOP, Foodlogik, MiniGame, Auswahlfenster                             |
+| Franziska Greunig | Userlogik, Gameover-Logik, Adminbereich, UnitTests                        |
+| Beide             | `PetAPI`, Hauptfenster, Design, Logging, Dokumentation   
 
-## Welche Features sind ein Muss?
-- Benutzerlogin (User/Admin)
-- Darstellung eines virtuellen Haustiers
-- Haustieraktionen: Füttern, Spielen, Schlafen
-- Haustierstatus (Hunger, Energie, Stimmung) ändern sich über Zeit
-- Speichern der Daten in einer MariaDB
-- Mindestens 3 Fenster
-- Basisarchitektur mit Vererbung und Interfaces
-- Nutzung von GitHub
-- Auswahl verschiedener Tierarten bei Spielstart *
-- Mehrere Haustiere pro Benutzer *
-- Animierte Haustierbilder (z.B. beim Spielen bewegt sich das Bild) *
+## Projektplanung (Lastenheft)
 
-## Welche Features sind Erweiterungen (nice-to-have)?
-- Hintergrundmusik oder Soundeffekte bei Aktionen
-- Cloud-Datenbank (z.B. Cloudflare) statt lokaler MariaDB
+### Ziel
+Die Grundidee ist ein digitales Haustier, das wie ein klassisches Tamagotchi überlebt, gepflegt und beobachtet werden kann. Benutzer registrieren sich, erstellen ein eigenes Tier, und können über Aktionen wie Füttern, Spielen und Schlafen den Zustand des Tieres beeinflussen.  
+Ziel ist es, das Tier „glücklich“ zu halten. Die Kommunikation erfolgt über eine REST-API mittels JSON.
 
+### Anforderungen
 
-## Wie möchten wir das Ganze grob umsetzen?
-1. **Planung:**
-   - Erstellung von GUI-Skizzen für Login-, Haupt- und Statusfenster
-   - Klassendiagramme für Haustier, Benutzer und Aktionen
-   - Aufsetzen eines GitHub-Repositories
+**Funktional:**
+- Benutzerregistrierung & Login
+- Haustier anlegen, bearbeiten, löschen
+- Aktionen: Feed, Sleep, Play
+- Statusanzeigen (Hunger, Energie, Stimmung)
+- Bildpfade für UI-Darstellung
+- REST-API mit Swagger-Doku
+- Password Hashing (bcrypt)
+- Logging, JSON-Rückgaben, Unitest, OOP, Threads
 
-2. **Umsetzung Frontend (WPF, C#):**
-   - Aufbau der Fensterstruktur
-   - Implementierung der Haustierlogik und Benutzerführung
-   - Anbindung an die REST-API für Lese-/Schreibvorgänge
-   - Einbauen von Logging und ersten Unit-Tests
+---
 
-3. **Umsetzung Backend (C#, MariaDB):**
-   - Erstellung der Datenbanktabellen in MariaDB
-   - Aufbau einer REST-API (C#) zur Kommunikation mit der Datenbank
-   - Implementieren von Rollenverwaltung und Sicherheitsmechanismen
+## Umsetzungsdetails
 
-4. **Testen und Dokumentieren:**
-   - Durchgehendes Testen aller Funktionen 
-   - Erstellung der Dokumentation 
+**Backend:**
+- Flask (Python)
+- REST-Endpunkte für Benutzer & Haustiere
+- bcrypt für Passwort-Hashing
+- Fehlerbehandlung mit Try/Except
 
-5. **Abschluss:**
-   - Erstellung von Präsentationsunterlagen
-   - Hochladen von Dokumentation und Projekt auf GitHub
+**Datenbank:**
+- MariaDB (kompatibel mit MySQL)
+- Tabellen: `users`, `pets`, `actions`
+- Fremdschlüsselverknüpfung von Haustieren zu Benutzern
+- ENUMs zur Wertabsicherung
 
+**Swagger:**
+- YAML-Datei beschreibt alle Endpunkte. API-Dokumentation (Datei: `swagger.yml`)
 
-___________________________________________________________________________________________________________________________________________________________
-## Beginn WPF 30.04.2025
-LoginWindow und Mainwindow - Franziska
-**Gemacht**
-Klick auf Login-Button ➔
-Wenn Benutzer = admin und Passwort = 1234 ➔ Wechsel ins Hauptfenster (MainWindow)
-Wenn falsch ➔ Fehlermeldung
-✅ Fenster "Login" soll sich öffnen
-✅ Eingabe Benutzername + Passwort möglich
-✅ Nach Login auf "admin/1234" öffnet sich das Hauptfenster
-Klick auf „Füttern“ ➔ Hunger-Leiste füllt sich
-Klick auf „Spielen“ ➔ Stimmung steigt
-Klick auf „Schlafen“ ➔ Energie steigt
-✅ MainWindow zeigt Bild, Buttons und Fortschrittsbalken
-✅ Aktionen verändern die Anzeige
-✅ StatusButton öffnet PetEditSelection
+---
+## Benutzerverwaltung
 
-## -0.9.05
-Pet.cs	Klasse für das Haustier (mit Hunger, Energie, Stimmung)
-User.cs	Klasse für Benutzer mit Rolle
-IFeedable.cs, IPlayable.cs, ISleepable.cs	Interfaces für Aktionen
+**Registrierung:**  
+  `POST /auth/register`  
+  Neue Benutzer werden registriert. Passwörter werden mit `bcrypt` gehasht und gespeichert.
 
-Jedes Mal, wenn du eine Aktion im Spiel klickst ➔ wird ein Logeintrag geschrieben.
-Die Datei log.txt liegt direkt im Programmverzeichnis.
-Bereich    Status ✅
-3 Fenster (Login, Main, Status)    ✅
-Haustier-Modell OOP    ✅
-GUI Steuerung    ✅
-Lebenssimulation Timer (Bonus)    ✅
-Logging    ✅
-Bereich	Status ✅
-Unit Tests (xUnit)	✅
+**Login:**  
+  `POST /auth/login`  
+  Benutzername und Passwort werden überprüft.
 
-## 09.05 - 
-Bereich	Status ✅
-Unit Tests (xUnit)	✅
+**Benutzer löschen:**  
+  `DELETE /users/<id>`  
+  Löscht User und alle zugeordneten Haustiere.
 
+---
 
+## Haustierverwaltung
+
+**Haustier erstellen oder aktualisieren:**  
+  `POST /pets`  
+  Automatisches Update bei gleichem `name` und `ownerid`
+
+**Alle Haustiere abrufen:**  
+  `GET /pets`  
+  Gibt eine Liste aller Haustiere zurück
+
+**Einzelnes Haustier abrufen:**  
+  `GET /pets/<id>`  
+  Gibt Tierdaten anhand `petid` zurück
+
+**Haustier bearbeiten:**  
+  `PUT /pets/<id>`  
+  Werte wie `hunger`, `energy`, `mood`, `imagepath` ändern
+
+**Haustier löschen:**  
+  `DELETE /pets/<id>`  
+  Entfernt Tier komplett aus der DB
+
+**Bildpfad (imagepath):**  
+  Pfad zu UI-Bild (z. B. `/Assets/seal_happy.png`) wird gespeichert
+
+---
+
+## Aktionen
+
+**Füttern:**  
+  `POST /pets/<id>/feed`  
+  Erhöht Hunger
+
+**Spielen:**  
+  `POST /pets/<id>/play`  
+  Erhöht Mood
+
+**Schlafen:**  
+  `POST /pets/<id>/sleep`  
+  Erhöht Energy
+
+---
+
+## Datenbank
+- Erstellt über `tamagotchischema.sql`
+- Verwendet MySQL
+- Tabellenstruktur:
+  - `users(userid, username, password, role)`
+  - `pets(petid, name, hunger, energy, mood, ownerid, imagepath)`
+  - `actions(actionid, petid, actiontype, lastperform)`
+
+**Beispielbenutzer:**
+  - `RegretfulFeeder` (user)
+  - `admin` (admin) 
+
+**Beispieltiere:**
+  - `Chubby Seal`, `Sid`
+
+---
 
 ## Softwarevoraussetzungen
+| Komponente       | Version   |
+|------------------|-----------|
+| Python           | 3.11      |
+| Flask            | 2.3.3     |
+| bcrypt           | 4.1.2     |
+| MariaDB / MySQL  | 10.6 / 8  |
+| .NET             | 8.0       |
+| Visual Studio    | 2022      |
+| Swagger          | 13.18     |
+| REST Client      | Postman   |
 
-| Komponente        | Version         |
-|-------------------|------------------|
-| .NET              | 8.0              |
-| Visual Studio     | 2022             |
-| MariaDB           | 10.6             |
-| Git               | 2.44             |
-| Swagger (NSwag)   | 13.18            |
+---
 
-
-
-## Architektur / Funktionsblöcke
+## Funktionsblöcke / Architektur
+**Frontend (WPF)**: GUI zur Steuerung
+  - Login/Register
+  - Auswahlfenster
+  - Hauptfenster (Tamagotchi)
+  - Editorfenster (Statusbearbeitung)
+**Backend**
+   - `app.py`: Enthält alle REST-Endpunkte
+   - MariaDB: lokale Datenspeicherung
+     - `pets`
+     - `users`
+     - `actions`
 
 ```
 [Frontend - WPF]
@@ -139,57 +174,39 @@ Unit Tests (xUnit)	✅
                 --> MariaDB (Users, Pets, Actions)
 ```
 
+## Testkonzept
+- Manuelle Tests über Postman / GUI
+- Überprüfung der Datenbankeinträge nach jeder Aktion
+  - Werte korrekt aktualisiert?
+  - Bildpfad und Besitzerzuordnung korrekt?
+  - Keine Duplikate oder fehlerhafte Einträge?
 
-## Detaillierte Umsetzung
-
-- **GUI:** Login, Auswahl, Haupt- und Statusbearbeitungsfenster
-- **Logik:** Klassen `Pet`, `User`, Interfaces `IFeedable`, `IPlayable`, `ISleepable`
-- **API:** REST-API mit Endpunkten zum Lesen/Schreiben von Benutzerdaten und Pet-Status
-- **DB:** 3 Tabellen – `Users`, `Pets`, `Actions`
-- **Logging:** Aktionen werden in `log.txt` protokolliert
-- **Tests:** xUnit-Tests für Haustier-Statusfunktionen
-
+---
 
 ## Probleme & Lösungen
 
-| Problem                              | Lösung                                     |
-|--------------------------------------|--------------------------------------------|
-| API-Kommunikation fehlerhaft         | CORS korrekt konfiguriert, Swagger genutzt |
-| MariaDB-Zugriff nicht möglich        | Verbindung mit Test-Tool geprüft           |
-| GUI friert bei Timer ein             | DispatcherTimer genutzt                    |
-| Unklarer Statusverlauf bei Tieren    | Logging eingeführt zur Nachverfolgung      |
-
-
-## Tests
-
-- **Framework:** xUnit
-- **Was wurde getestet?**
-  - Statusänderung nach Aktion
-  - Benutzerrollen-Zuweisung
-  - Datenbankverbindung
-  - JSON-Antworten der REST-API
 
 ---
 
 ## Bedienungsanleitung
+1. Konsole öffnen. API mit `python app.py` starten. MariaDB muss vorher lokal erstellt werden. Schema in `tamagotchidb`.
+2. WPF-Anwendung in Visual Studio starten.
+3. Logge dich ein oder registriere einen neuen User.
+4. Wähle ein Haustier aus.
+5. Nutze Buttons zum Füttern, Spielen, Schlafen. Aktionen beeinflussen die Statuswerte. Die Werte werden durch Healthbars dargestellt.
+6. Haustier kann gespeichert und wieder geladen werden. 
+7. Im Editorfenster können Werte manuell angepasst werden. Nur als Admin sichtbar.
 
-1. Starte das Programm
-2. Logge dich ein (z.B. `admin` / `1234`)
-3. Wähle ein Haustier aus oder erstelle eines
-4. Nutze Buttons zum Füttern, Spielen, Schlafen
-5. Überprüfe Statusanzeigen (ProgressBars)
-6. Status bearbeiten im Editorfenster möglich
-
+Genauer Sichtbar ->
+---
 
 ### Screenshots
-
-*(Hier sollen Screenshots eingefügt werden, z. B. von Login, MainWindow, Statusanzeigen)*
+![alt text](login_window-1.jpg)
+![alt text](Auswahl_window-1.jpg)
+![alt text](Main_window-1.jpg)
+![alt text](Admin_window.jpg)
 
 ---
 
-
-## Quellen / Mediennachweise
-
-- Bilder von [https://pixabay.com](https://pixabay.com) (lizenzfrei)
-- Icons von [https://www.flaticon.com](https://www.flaticon.com) unter CC 3.0 BY
-- Inspiration: Tamagotchi-Prinzip (ursprünglich von Bandai)
+## Quellen
+- 
