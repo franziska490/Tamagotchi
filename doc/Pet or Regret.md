@@ -190,6 +190,9 @@ Ziel ist es, das Tier „glücklich“ zu halten. Die Kommunikation erfolgt übe
   **Benutzernamen doppelt möglich:**  
   Kein `UNIQUE` auf `username`. → Datenbank anpassen, Duplikate verhindern.
 
+**Wird in WPF eine Opacity-Animation verwendet (z. B. über ein Storyboard), kann dies den kompletten Redraw des Visual Trees auslösen – insbesondere bei größeren Containern wie Grids oder Fenstern. Das führt zu Performanceproblemen.**
+  Opacity-Animationen vermeiden
+   – so bleibt der Visual Tree stabil 
   **Unsichtbare Elemente bleiben aktiv:**  
 
 ---
