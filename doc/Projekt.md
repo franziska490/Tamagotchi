@@ -109,3 +109,87 @@ Unit Tests (xUnit)	✅
 ## 09.05 - 
 Bereich	Status ✅
 Unit Tests (xUnit)	✅
+
+
+
+## Softwarevoraussetzungen
+
+| Komponente        | Version         |
+|-------------------|------------------|
+| .NET              | 8.0              |
+| Visual Studio     | 2022             |
+| MariaDB           | 10.6             |
+| Git               | 2.44             |
+| Swagger (NSwag)   | 13.18            |
+
+
+
+## Architektur / Funktionsblöcke
+
+```
+[Frontend - WPF]
+    |
+    |-- Login/Register Window
+    |-- Auswahlfenster
+    |-- Hauptfenster (Tamagotchi)
+    |-- Editorfenster (Status bearbeiten)
+        |
+        --> REST API (C# Backend)
+                |
+                --> MariaDB (Users, Pets, Actions)
+```
+
+
+## Detaillierte Umsetzung
+
+- **GUI:** Login, Auswahl, Haupt- und Statusbearbeitungsfenster
+- **Logik:** Klassen `Pet`, `User`, Interfaces `IFeedable`, `IPlayable`, `ISleepable`
+- **API:** REST-API mit Endpunkten zum Lesen/Schreiben von Benutzerdaten und Pet-Status
+- **DB:** 3 Tabellen – `Users`, `Pets`, `Actions`
+- **Logging:** Aktionen werden in `log.txt` protokolliert
+- **Tests:** xUnit-Tests für Haustier-Statusfunktionen
+
+
+## Probleme & Lösungen
+
+| Problem                              | Lösung                                     |
+|--------------------------------------|--------------------------------------------|
+| API-Kommunikation fehlerhaft         | CORS korrekt konfiguriert, Swagger genutzt |
+| MariaDB-Zugriff nicht möglich        | Verbindung mit Test-Tool geprüft           |
+| GUI friert bei Timer ein             | DispatcherTimer genutzt                    |
+| Unklarer Statusverlauf bei Tieren    | Logging eingeführt zur Nachverfolgung      |
+
+
+## Tests
+
+- **Framework:** xUnit
+- **Was wurde getestet?**
+  - Statusänderung nach Aktion
+  - Benutzerrollen-Zuweisung
+  - Datenbankverbindung
+  - JSON-Antworten der REST-API
+
+---
+
+## Bedienungsanleitung
+
+1. Starte das Programm
+2. Logge dich ein (z.B. `admin` / `1234`)
+3. Wähle ein Haustier aus oder erstelle eines
+4. Nutze Buttons zum Füttern, Spielen, Schlafen
+5. Überprüfe Statusanzeigen (ProgressBars)
+6. Status bearbeiten im Editorfenster möglich
+
+
+### Screenshots
+
+*(Hier sollen Screenshots eingefügt werden, z. B. von Login, MainWindow, Statusanzeigen)*
+
+---
+
+
+## Quellen / Mediennachweise
+
+- Bilder von [https://pixabay.com](https://pixabay.com) (lizenzfrei)
+- Icons von [https://www.flaticon.com](https://www.flaticon.com) unter CC 3.0 BY
+- Inspiration: Tamagotchi-Prinzip (ursprünglich von Bandai)
