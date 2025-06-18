@@ -135,16 +135,16 @@ Ziel ist es, das Tier „glücklich“ zu halten. Die Kommunikation erfolgt übe
 ---
 
 ## Softwarevoraussetzungen
-| Komponente       | Version   |
-|------------------|-----------|
-| Python           | 3.11      |
-| Flask            | 2.3.3     |
-| bcrypt           | 4.1.2     |
-| MariaDB / MySQL  | 10.6 / 8  |
-| .NET             | 8.0       |
-| Visual Studio    | 2022      |
-| Swagger          | 13.18     |
-| REST Client      | Postman   |
+| Komponente       | Version        |
+|------------------|----------------|
+| Python           | 3.11           |
+| Flask            | 2.3.3          |
+| bcrypt           | 4.1.2          |
+| MariaDB          | 11.7 (x64)     |
+| .NET             | 8.0            |
+| Visual Studio    | 2022           |
+| Swagger          | 13.18          |
+| REST Client      | Postman        |
 
 ---
 
@@ -184,7 +184,13 @@ Ziel ist es, das Tier „glücklich“ zu halten. Die Kommunikation erfolgt übe
 ---
 
 ## Probleme & Lösungen
+ **Bilder nicht geladen:**  
+  Nicht als Ressourcen eingebunden. → Bilder als `Resource` markieren, Pfade anpassen.
 
+  **Benutzernamen doppelt möglich:**  
+  Kein `UNIQUE` auf `username`. → Datenbank anpassen, Duplikate verhindern.
+
+  **Unsichtbare Elemente bleiben aktiv:**  
 
 ---
 
@@ -209,4 +215,9 @@ Genauer Sichtbar ->
 ---
 
 ## Quellen
-- 
+Images: 
+- https://giphy.com/
+- https://tenor.com/de-AT/
+
+- https://www.youtube.com/playlist?list=PLReL099Y5nRc-zbaFbf0aNcIamBQujOxP
+- https://www.testautomatisierung.org/tutorial-testautomatisierung-unit-tests/
