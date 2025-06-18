@@ -20,9 +20,13 @@ namespace MyTamagotchi
         {
             var foodList = new List<FoodItem>
             {
-                new FoodItem("Fisch", 30, 10, "fibsh.png"),
-                new FoodItem("Melone", 15, 20, "fibsh2.png"),
-                //new FoodItem("Eis", 10, 30, "Assets/icecream.png"),
+                //new FoodItem("Fisch", 30, 10, "fibsh.png"),
+                //new FoodItem("Fisch", 15, 20, "fibsh2.png"),
+                new FoodItem("Fisch", "fibsh.png"),
+                new FoodItem("Fisch", "fibsh3.png"),
+                new FoodItem("Fisch", "fibsh4.png"),
+                new FoodItem("Fisch", "fibsh5.png"),
+                new FoodItem("Fisch", "manyfibsh.png"),
             };
 
             foreach (var food in foodList)
@@ -43,6 +47,7 @@ namespace MyTamagotchi
                     Close();
                 };
 
+                // Ímage Element in die Benutzeroberfläche einfügen
                 FoodPanel.Children.Add(img);
             }
 

@@ -11,10 +11,23 @@
   <ItemGroup>
     <None Remove="Assets\dead_seal.png" />
     <None Remove="Assets\fibsh.png" />
-    <None Remove="Assets\Nom\fibsh2.png" />
-    <None Remove="Assets\Nom\krabbe.png" />
-    <None Remove="Assets\Nom\kugelfibsh.png" />
+    <None Remove="Assets\fibsh3.png" />
+    <None Remove="Assets\fibsh4.png" />
+    <None Remove="Assets\fibsh5.png" />
+    <None Remove="Assets\fibsh6.png" />
+    <None Remove="Assets\Gifs\Dance.gif" />
+    <None Remove="Assets\Gifs\igel.gif" />
+    <None Remove="Assets\Gifs\Sea.gif" />
+    <None Remove="Assets\Nom\manyfibsh.png" />
     <None Remove="Assets\pinguin.png" />
+    <None Remove="Assets\pinguin_dead.png" />
+    <None Remove="Assets\pinguin_happy.png" />
+    <None Remove="Assets\pinguin_happy2.png" />
+    <None Remove="Assets\pinguin_hungry.png" />
+    <None Remove="Assets\pinguin_nom.png" />
+    <None Remove="Assets\pinguin_sad.png" />
+    <None Remove="Assets\pinguin_sleep.png" />
+    <None Remove="Assets\plushie.png" />
     <None Remove="Assets\seal_dead.png" />
     <None Remove="Assets\seal_error.png" />
     <None Remove="Assets\seal_happy.png" />
@@ -28,19 +41,37 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Gifs\igel.gif" />
+    <Resource Include="Assets\Gifs\Sea.gif" />
+    <Resource Include="Assets\pinguin_dead.png" />
+    <Resource Include="Assets\pinguin_happy.png" />
+    <Resource Include="Assets\pinguin_happy2.png" />
+    <Resource Include="Assets\pinguin_hungry.png" />
+    <Resource Include="Assets\pinguin_nom.png" />
+    <Resource Include="Assets\pinguin_sad.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\fibsh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Gifs\Dance.gif" />
+    <Resource Include="Assets\Nom\fibsh3.png" />
+    <Resource Include="Assets\Nom\fibsh4.png" />
+    <Resource Include="Assets\Nom\fibsh5.png" />
+    <Resource Include="Assets\fibsh6.png" />
     <Resource Include="Assets\Nom\fibsh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\Nom\fibsh2.png" />
-    <Resource Include="Assets\Nom\krabbe.png" />
-    <Resource Include="Assets\Nom\kugelfibsh.png" />
+    <Resource Include="Assets\Nom\manyfibsh.png" />
+    <Resource Include="Assets\pinguin_sleep.png" />
+    <Resource Include="Assets\pinguin_sleepy.png" />
+    <Resource Include="Assets\plushie.png" />
     <Resource Include="Assets\seal_dead.png" />
     <Resource Include="Assets\seal_error.png" />
     <Resource Include="Assets\seal_happy.png" />

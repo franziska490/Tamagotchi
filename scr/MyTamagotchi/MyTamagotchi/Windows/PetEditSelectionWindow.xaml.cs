@@ -14,65 +14,115 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using System.Runtime.ConstrainedExecution;
 namespace MyTamagotchi
 {
     
     public partial class PetEditSelectionWindow : Window
     {
         private PetSelectionWindow parentWindow;
+        List<User> users = new List<User>();
 
         public PetEditSelectionWindow(PetSelectionWindow parent)
         {
             InitializeComponent();
             parentWindow = parent;
+            Loaded += PetEditSelectionWindow_Loaded; 
+        }
+        private async void PetEditSelectionWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            users = await PetApiService.GetUsersAsync();
+            UserListBox.ItemsSource = users;
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            ErrorTextBlock.Text = "";
+
             string petName = NameBox.Text.Trim();
 
-            // Name darf nicht leer und nur Buchstaben sein
             if (string.IsNullOrWhiteSpace(petName) || !Regex.IsMatch(petName, @"^[a-zA-Z]+$"))
             {
-                MessageBox.Show("Nuhu thats not a Name!");
+                ErrorTextBlock.Text = "Invalid name! letters only!";
                 return;
             }
 
-            // Neues Pet erstellen
-            Pet newPet = new Pet(petName);
-
-            // Verfallraten prüfen
-            if (!int.TryParse(HungerRateBox.Text, out int hungerRate) || hungerRate < 1 || hungerRate > 20)
+            if (UserListBox.SelectedItem is not User selectedUser)
             {
-                MessageBox.Show("Number between 1-20");
+                ErrorTextBlock.Text = "Please select a user! :)";
                 return;
             }
 
-            if (!int.TryParse(EnergyRateBox.Text, out int energyRate) || energyRate < 1 || energyRate > 20)
+            if (!int.TryParse(HungerRateBox.Text, out int hungerRate) || hungerRate < 1 || hungerRate > 20 ||
+                !int.TryParse(EnergyRateBox.Text, out int energyRate) || energyRate < 1 || energyRate > 20 ||
+                !int.TryParse(MoodRateBox.Text, out int moodRate) || moodRate < 1 || moodRate > 20)
             {
-                MessageBox.Show("Number between 1-20");
+                ErrorTextBlock.Text = "Values between 1–20! ";
                 return;
             }
 
-            if (!int.TryParse(MoodRateBox.Text, out int moodRate) || moodRate < 1 || moodRate > 20)
+            Pet newPet = new Pet(petName)
             {
-                MessageBox.Show("Number between 1-20");
+                OwnerId = selectedUser.Id,
+                HungerDecreaseRate = hungerRate,
+                EnergyDecreaseRate = energyRate,
+                MoodDecreaseRate = moodRate
+            };
+
+            bool success = await PetApiService.SavePetAsync(newPet);
+            if (!success)
+            {
+                ErrorTextBlock.Text = "Error saving pet! O_O";
                 return;
             }
 
-            // Werte setzen
-            newPet.HungerDecreaseRate = hungerRate;
-            newPet.EnergyDecreaseRate = energyRate;
-            newPet.MoodDecreaseRate = moodRate;
-
-            // Pet dem Parent Window hinzufügen
             parentWindow.AddPet(newPet);
+            Logger.Log($"New pet '{newPet.Name}' created for {selectedUser.Username}");
+            Close();
+        }
 
-            // Log schreiben
-            Logger.Log($"New Pet: {newPet.Name})");
 
-            // Fenster schließen
-            this.Close();
+
+        private async void DeleteUsersButton_Click(object sender, RoutedEventArgs e)
+        {
+            ErrorTextBlock.Text = "";
+
+            // Ist sender ein Button?
+            // Ist die Tag-Eigenschaft dieses Buttons ein Objekt vom Typ User?
+            // btn = der Button, der das Event ausgelöst hat.
+            // userToDelete = das User - Objekt, das im Button gespeichert war.
+            if (sender is Button btn && btn.Tag is User userToDelete)
+            {
+                bool deleted = false;
+                try
+                {
+                    deleted = await PetApiService.DeleteUsers(userToDelete.Id);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Error deleting user: " + ex.Message);
+                    ErrorTextBlock.Text = "Error delet.";
+                    return;
+                }
+
+                if (deleted)
+                {
+                    users.Remove(userToDelete);
+                    UserListBox.ItemsSource = null;
+                    UserListBox.ItemsSource = users;
+                    Logger.Log($"User deleted: {userToDelete.Username}");
+                }
+                else
+                {
+                    ErrorTextBlock.Text = "Delete failed.";
+                    Logger.Log($"Delete attempt failed: {userToDelete.Username}");
+                }
+            }
+            else
+            {
+                ErrorTextBlock.Text = "Invalid user selection.";
+                Logger.Log("Invalid tag in DeleteUsersButton_Click");
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

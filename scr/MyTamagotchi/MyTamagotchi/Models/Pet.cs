@@ -12,7 +12,7 @@ namespace MyTamagotchi.Models
         public int OwnerId { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         [JsonPropertyName("hunger")]
         public int Hunger { get; set; }
@@ -25,8 +25,7 @@ namespace MyTamagotchi.Models
 
         [JsonPropertyName("imagepath")]
         public string ImagePath { get; set; } = "/Assets/default_happy.png";
-
-        // Bildpfad für WPF-Ressourcensystem (pack://...)
+       
         public string ImageSourcePath
         {
             get
@@ -38,6 +37,7 @@ namespace MyTamagotchi.Models
             }
         }
 
+
         public int HungerDecreaseRate { get; set; } = 2;
         public int EnergyDecreaseRate { get; set; } = 2;
         public int MoodDecreaseRate { get; set; } = 1;
@@ -48,9 +48,14 @@ namespace MyTamagotchi.Models
             Hunger = 100;
             Energy = 100;
             Mood = 100;
+
+            HungerDecreaseRate = 10;
+            EnergyDecreaseRate = 8;
+            MoodDecreaseRate = 7;
         }
 
-        public Pet() { } // WICHTIG für JSON-Deserialisierung!
+
+        public Pet() { } 
 
         public void Feed()
         {
@@ -61,7 +66,7 @@ namespace MyTamagotchi.Models
 
         public void Play()
         {
-            Mood = Math.Min(Mood + 30, 100);
+            //Mood = Math.Min(Mood + 30, 100);
             Energy = Math.Max(Energy - 10, 0);
             CheckGameOver();
         }
@@ -73,12 +78,15 @@ namespace MyTamagotchi.Models
             CheckGameOver();
         }
 
-        public event Action? OnGameOver;
+        // Ereignis = GameOver; Bedingung erfüllt = nächster Teil wird ausgeführt
+        public event Action? OnGameOver; 
 
         public void CheckGameOver()
         {
+            // Einer der Werte 0 = GameOver Screen
             if (Hunger == 0 || Mood == 0 || Energy == 0)
             {
+                // Ereignis tritt ein (Invoke)
                 OnGameOver?.Invoke();
             }
         }

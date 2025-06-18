@@ -1,17 +1,24 @@
-﻿// MainWindow.xaml.cs
-using MyTamagotchi.Models;
+﻿using MyTamagotchi.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
+using System.Windows.Shapes;
+
+// async: Methode kann weiterlaufen ohne die Anwendung zu blockieren
+// await: Wartet darauf das die Aufgabe fertig ist
 
 namespace MyTamagotchi
 {
     public partial class MainWindow : Window
     {
-        private Pet myPet;
-        private DispatcherTimer lifeTimer;
+        private DispatcherTimer lifeTimer = new DispatcherTimer();
         private User currentUser;
+        private Pet myPet;
+        private List<Pet> pets = new();
 
         public MainWindow(Pet selectedPet, User user)
         {
@@ -20,8 +27,31 @@ namespace MyTamagotchi
             currentUser = user;
             StartLifeTimer();
             UpdateUI();
-
             myPet.OnGameOver += ShowGameOverScreen;
+            Loaded += async (s, e) => await LoadUserPets(); //Haustiere laden nach Start
+        }
+
+        private async Task LoadUserPets()
+        {
+            ErrorTextBlock.Text = "";
+            try
+            {
+                pets = await PetApiService.GetOwnerPets(currentUser.Id);
+                if (pets == null || pets.Count == 0)
+                {
+                    //ErrorTextBlock.Text = "No pets found.";
+                    Logger.Log("No pets for user " + currentUser.Username);
+                }
+                else
+                {
+                    Logger.Log($"{pets.Count} pets loaded for {currentUser.Username}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorTextBlock.Text = "Error loading pets. :o";
+                Logger.Log("Error loading pets: " + ex.Message);
+            }
         }
 
         private void UpdatePetImage()
@@ -45,16 +75,17 @@ namespace MyTamagotchi
             lifeTimer.Tick += LifeTimer_Tick;
             lifeTimer.Start();
         }
-
-        private void LifeTimer_Tick(object sender, EventArgs e)
+        private void LifeTimer_Tick(object? sender, EventArgs e)
         {
-            myPet.Hunger = Math.Max(myPet.Hunger - 10, 0);
-            myPet.Energy = Math.Max(myPet.Energy - 8, 0);
-            myPet.Mood = Math.Max(myPet.Mood - 4, 0);
+            myPet.Hunger = Math.Max(myPet.Hunger - myPet.HungerDecreaseRate, 0);
+            myPet.Energy = Math.Max(myPet.Energy - myPet.EnergyDecreaseRate, 0);
+            myPet.Mood = Math.Max(myPet.Mood - myPet.MoodDecreaseRate, 0);
 
             UpdateUI();
             myPet.CheckGameOver();
         }
+
+
 
         private void UpdateUI()
         {
@@ -76,8 +107,8 @@ namespace MyTamagotchi
 
             if (result == true && foodWindow.SelectedItem != null)
             {
-                foodWindow.SelectedItem.ApplyTo(myPet);
-                Logger.Log($"{myPet.Name} hat {foodWindow.SelectedItem.Name} gegessen.");
+                myPet.Feed();
+                Logger.Log($"{myPet.Name} has {foodWindow.SelectedItem.Name} eaten."); 
 
                 if (myPet is StarterPet starter)
                 {
@@ -93,7 +124,7 @@ namespace MyTamagotchi
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Play();
-            Logger.Log($"{myPet.Name} hat gespielt.");
+            Logger.Log($"{myPet.Name} played.");
 
             if (myPet is StarterPet starter)
             {
@@ -103,12 +134,18 @@ namespace MyTamagotchi
 
             await Task.Delay(1500);
             UpdateUI();
+
+            // Die Methode wird mehrmals aufgerufen, jedes Mal wenn das Event feuert.
+            // Um zu verhindern, dass das Event mehrfach aufgerufen wird, entfernen wir es zuerst.
+            MiniGame.OnFinished -= UpdateUI; 
+            MiniGame.OnFinished += UpdateUI;
+            MiniGame.Start(myPet);
         }
 
         private async void SleepButton_Click(object sender, RoutedEventArgs e)
         {
             myPet.Sleep();
-            Logger.Log($"{myPet.Name} hat geschlafen.");
+            Logger.Log($"{myPet.Name} is sleeping.");
 
             if (myPet is StarterPet starter)
             {
@@ -122,26 +159,39 @@ namespace MyTamagotchi
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            ErrorTextBlock.Text = "";
             myPet.Name = PetNameBox.Text;
             myPet.OwnerId = currentUser.Id;
 
-            bool success = await PetApiService.SavePetAsync(myPet);
+            try
+            {
+                bool success = await PetApiService.SavePetAsync(myPet);
+                if (success)
+                {
+                    ErrorTextBlock.Text = "Pet saved! :D";
+                    Logger.Log($"Pet {myPet.Name} saved.");
 
-            if (success)
-            {
-                MessageBox.Show("Haustier erfolgreich gespeichert!");
-                PetSelectionWindow sel = new PetSelectionWindow(currentUser);
-                sel.Show();
-                this.Close();
+                    Igel.Visibility = Visibility.Visible;
+                    await Task.Delay(2000);
+                    Igel.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    ErrorTextBlock.Text = "Error saving pet! O_O";
+                    Logger.Log($"Error saving {myPet.Name}.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Fehler beim Speichern.");
+                ErrorTextBlock.Text = "Server error while saving.";
+                Logger.Log("Saving failed: " + ex.Message);
             }
         }
 
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            myPet.OnGameOver -= ShowGameOverScreen; // verhindert GameOver beim absichtlichen Verlassen
             PetSelectionWindow petSelectionWindow = new PetSelectionWindow(currentUser);
             petSelectionWindow.Show();
             this.Close();
@@ -149,9 +199,12 @@ namespace MyTamagotchi
 
         private void ShowGameOverScreen()
         {
+            // Erzwingt die Ausführung im UI-Thread.
+            // Notwendig, wenn du dich gerade nicht im UI - Thread befindest(z.B.aus einem Hintergrundthread heraus).
+            // Invoke blockiert bis die Aktion abgeschlossen ist (im Gegensatz zu BeginInvoke).
             Dispatcher.Invoke(() =>
             {
-                var gameOverWindow = new GameOverWindow();
+                var gameOverWindow = new GameOverWindow(currentUser, myPet);
                 gameOverWindow.Show();
                 this.Close();
             });

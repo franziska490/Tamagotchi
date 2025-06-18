@@ -21,39 +21,42 @@ namespace MyTamagotchi
 
         private async void PetSelectionWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            // Admin sichtbar machen
             if (currentUser.IsAdmin())
                 EditButton.Visibility = Visibility.Visible;
             else
                 EditButton.Visibility = Visibility.Collapsed;
 
-            await LoadPets();
+            await LoadPets(); 
         }
 
         private async Task LoadPets()
         {
             int currentUserId = currentUser.Id;
+            ErrorTextBlock.Text = "";
 
             try
             {
                 pets = await PetApiService.GetOwnerPets(currentUserId);
-
                 if (pets == null)
                 {
-                    MessageBox.Show("Fehler beim Abrufen der Haustiere.");
+                    ErrorTextBlock.Text = "No pets :C.";
+                    Logger.Log("Null returned by GetOwnerPets for user ID: " + currentUserId);
                     return;
                 }
-
                 if (pets.Count == 0)
                 {
-                    MessageBox.Show("Keine Haustiere gefunden.");
+                    ErrorTextBlock.Text = "Huh no pets found! :O.";
+                    Logger.Log("No pets found for user ID: " + currentUserId);
                     return;
                 }
 
                 PetListBox.ItemsSource = pets;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Fehler beim Laden der Haustiere.");
+                ErrorTextBlock.Text = "No pets where loaded! :<";
+                Logger.Log("Load Pets: " + ex.Message);
             }
         }
 
@@ -113,21 +116,34 @@ namespace MyTamagotchi
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            ErrorTextBlock.Text = "";
+
             if (sender is Button btn && btn.Tag is Pet petToDelete)
             {
-                var confirm = MessageBox.Show($"Willst du wirklich '{petToDelete.Name}' löschen?", "Löschen?", MessageBoxButton.YesNo);
-                if (confirm != MessageBoxResult.Yes) return;
+                Logger.Log($"Delete request for pet: {petToDelete.Name}");
+                bool deleted;
+                try
+                {
+                    deleted = await PetApiService.DeletePetAsync(petToDelete.Id);
+                }
+                catch (Exception ex)
+                {
+                    ErrorTextBlock.Text = "Error deleting pet!";
+                    Logger.Log("DeletePetAsync error: " + ex.Message);
+                    return;
+                }
 
-                bool deleted = await PetApiService.DeletePetAsync(petToDelete.Id);
                 if (deleted)
                 {
                     pets.Remove(petToDelete);
                     PetListBox.ItemsSource = null;
                     PetListBox.ItemsSource = pets;
+                    Logger.Log($"Pet deleted: {petToDelete.Name}");
                 }
                 else
                 {
-                    MessageBox.Show("Fehler beim Löschen.");
+                    ErrorTextBlock.Text = "Delete failed! :o";
+                    Logger.Log($"Delete failed for pet: {petToDelete.Name}");
                 }
             }
         }

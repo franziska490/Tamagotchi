@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
+
+
+// Daten vorbereiten (JSON)
+// HTTP - Request senden
+// Antwort lesen und verarbeiten
 
 namespace MyTamagotchi.Models
 {
     public class PetApiService
     {
+        // Der Static Client verhindert resourcen Probleme und wird für alle Anwedungen verwendet
         private static readonly HttpClient client = new HttpClient();
 
-        // Holt ALLE Haustiere von der API
+        //Alle Haustiere von der API
         public static async Task<List<Pet>> GetPetsAsync()
         {
             try
@@ -33,7 +41,7 @@ namespace MyTamagotchi.Models
             }
         }
 
-        // Holt NUR die Haustiere eines bestimmten Users
+        //Haustiere eines bestimmten Users  
         public static async Task<List<Pet>> GetOwnerPets(int ownerid)
         {
             HttpResponseMessage response = await client.GetAsync($"http://localhost:5000/pets?ownerid={ownerid}");
@@ -57,7 +65,7 @@ namespace MyTamagotchi.Models
                 hunger = updatePet.Hunger,
                 energy = updatePet.Energy,
                 mood = updatePet.Mood,
-                imagepath = updatePet.ImagePath  // WICHTIG!
+                imagepath = updatePet.ImagePath  
             });
 
             StringContent content = new StringContent(updatedpets, Encoding.UTF8, "application/json");
@@ -104,44 +112,51 @@ namespace MyTamagotchi.Models
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task<User> GetUserid(string username, string password)
+        public static async Task<User?> GetUserid(string username, string password)
         {
-            string userJson = JsonSerializer.Serialize(new
-            {
-                username = username,
-                password = password
-            });
-
-            StringContent content = new StringContent(userJson, Encoding.UTF8, "application/json");
+            var data = new { username, password };
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await client.PostAsync("http://localhost:5000/auth/login", content);
 
-            string json = await response.Content.ReadAsStringAsync();
-
             if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Fehlerhafte Serverantwort:");
-                Console.WriteLine(json);
                 return null;
-            }
 
-            try
+            string json = await response.Content.ReadAsStringAsync();
+            var user = JsonSerializer.Deserialize<User>(json, new JsonSerializerOptions
             {
-                User user = JsonSerializer.Deserialize<User>(json, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                PropertyNameCaseInsensitive = true
+            });
 
-                return user;
-            }
-            catch (JsonException ex)
-            {
-                Console.WriteLine("Deserialisierungsfehler:");
-                Console.WriteLine(json);
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
+            return user;
         }
 
+        public static async Task<bool> RegisterUser(string username, string password)
+        {
+            var data = new { username, password };
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync("http://localhost:5000/auth/register", content);
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> DeleteUsers(int userId)
+        {
+            HttpResponseMessage response = await client.DeleteAsync($"http://localhost:5000/users/{userId}");
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<List<User>> GetUsersAsync()
+        {
+            HttpResponseMessage response = await client.GetAsync("http://localhost:5000/users");
+            string json = await response.Content.ReadAsStringAsync();
+            List<User> users = JsonSerializer.Deserialize<List<User>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return users ?? new List<User>();
+            //Anderst:
+            //if (users == null){return new List<User>();} else{return users;}
+        }
     }
 }

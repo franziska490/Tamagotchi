@@ -1,93 +1,85 @@
-﻿using MyTamagotchi;
-using MyTamagotchi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using MyTamagotchi.Models;
 
 namespace MyTamagotchi
 {
-    /// <summary>
-    /// Interaktionslogik für LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
-        private static Dictionary<string, string> users = new Dictionary<string, string>();
-        private static string adminUsername = "admin";
-        private static string adminPassword = "admin123";
-
-        public static bool IsAdmin { get; private set; } = false;
-
         public LoginWindow()
         {
             InitializeComponent();
-
-            //// Admin fix einbauen
-            //if (!users.ContainsKey(adminUsername))
-            //{
-            //    users.Add(adminUsername, adminPassword);
-            //}
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string username = UsernameBox.Text.Trim();
             string password = PasswordBox.Password.Trim();
-
-            User user = await PetApiService.GetUserid(username, password);
-
-            if (user != null)
-            {
-                // MessageBox.Show("Login erfolgreich!", "Info");
-
-                //if (username == adminUsername)
-                //{
-                //    IsAdmin = true;
-                //}
-                //else
-                //{
-                //    IsAdmin = false;
-                //}
-
-                // Weiter zu PetSelectionWindow
-                PetSelectionWindow petSelectionWindow = new PetSelectionWindow(user);
-                petSelectionWindow.Show();
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Benutzername oder Passwort falsch!", "Fehler");
-            }
-        }
-
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
-        {
-            string username = UsernameBox.Text.Trim();
-            string password = PasswordBox.Password.Trim();
+            ErrorTextBlock.Text = "";
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Benutzername und Passwort dürfen nicht leer sein!", "Fehler");
+                ErrorTextBlock.Text = "Username and password can't be empty!";
+                Logger.Log("Empty login input.");
                 return;
             }
 
-            if (users.ContainsKey(username))
+            try
             {
-                MessageBox.Show("Benutzer existiert bereits!", "Fehler");
+                User user = await PetApiService.GetUserid(username, password);
+                if (user != null)
+                {
+                    new PetSelectionWindow(user).Show();
+                    Close();
+                }
+                else
+                {
+                    ErrorTextBlock.Text = "Login failed. Wrong username or password! TwT";
+                    Logger.Log("Login failed for user: " + username);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorTextBlock.Text = "Server error!";
+                Logger.Log("Login failed: " + ex.Message);
+            }
+        }
+
+        private async void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            string username = UsernameBox.Text.Trim();
+            string password = PasswordBox.Password.Trim();
+            ErrorTextBlock.Text = "";
+
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                ErrorTextBlock.Text = "Username and password can't be empty!";
+                Logger.Log("Empty login input.");
                 return;
             }
-
-            users.Add(username, password);
-            MessageBox.Show("Registrierung erfolgreich!", "Info");
+            try
+            {
+                bool success = await PetApiService.RegisterUser(username, password);
+                if (success)
+                {
+                    ErrorTextBlock.Text = "Registration successful. Please log in! :D";
+                    Logger.Log("Registration successful for: " + username);
+                }
+                else
+                {
+                    ErrorTextBlock.Text = "Username taken or error! :/";
+                    Logger.Log("Registration failed for: " + username);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorTextBlock.Text = "Server error!";
+                Logger.Log("Registration error: " + ex.Message);
+            }
         }
     }
 }
