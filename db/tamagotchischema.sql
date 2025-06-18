@@ -5,7 +5,7 @@ USE tamagotchidb;
 -- Tabelle für Benutzer
 CREATE TABLE users (
     userid INT AUTO_INCREMENT PRIMARY KEY,
-    username TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL, -- TODO: Passwort Hash
     role ENUM('admin', 'user') NOT NULL 
 );
@@ -30,25 +30,3 @@ CREATE TABLE actions (
     lastperform TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (petid) REFERENCES pets(petid)
 );
-
--- Benutzer einfügen
-INSERT INTO users (username, password, role) VALUES
-('laura', '$2b$12$RhW49UHBQdHALShQnMFfME0nIbiS2MLkLSISQE3ajLMhHyzGqQC0Ya', 'user'),
-('admin01', '$2b$12$1.TW4oZQxTDjGsIWh16y0ET0Yh1BQ4zMBo4qeCceNVecYnVrAyG', 'admin');
-
-
--- Haustiere einfügen (mit Bildpfad)
-INSERT INTO pets (name, hunger, energy, mood, ownerid, imagepath) VALUES 
-('Fluffy', 80, 90, 85, 1, '/Assets/seal_happy.png'),     
-('Spike', 60, 70, 75, 2, '/Assets/penguin_happy.png'),   
-
--- Beispielaktionen für Fluffy (petid = 1)
-INSERT INTO actions (petid, actiontype) VALUES 
-(1, 'hunger'),
-(1, 'energy'),
-(1, 'mood');
-
--- Beispielaktionen für Spike (petid = 2)
-INSERT INTO actions (petid, actiontype) VALUES 
-(2, 'hunger'),
-(2, 'mood');

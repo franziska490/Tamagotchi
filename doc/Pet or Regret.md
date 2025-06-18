@@ -201,7 +201,7 @@ Ziel ist es, das Tier „glücklich“ zu halten. Die Kommunikation erfolgt übe
 4. Wähle ein Haustier aus.
 5. Nutze Buttons zum Füttern, Spielen, Schlafen. Aktionen beeinflussen die Statuswerte. Die Werte werden durch Healthbars dargestellt.
 6. Haustier kann gespeichert und wieder geladen werden. 
-7. Im Editorfenster können Werte manuell angepasst werden. Nur als Admin sichtbar.
+7. Im Editorfenster können Werte manuell angepasst werden. Nur als Admin sichtbar. Die Rolle `"admin"` muss manuell in der MariaDB-Konsole gesetzt werden.
 
 Genauer Sichtbar ->
 ---
